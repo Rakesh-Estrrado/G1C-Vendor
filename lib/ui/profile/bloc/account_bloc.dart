@@ -19,34 +19,39 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
   AccountBloc(BuildContext context) : super(AccountState()) {
     on<GetAccountDetails>((event, emit) async {
       showLoaderDialog();
-      final List<Future<dynamic>> apiCalls = [
-        Repository().getAccountDetails(),
-        Repository().getTermsAndConditions(),
-        Repository().getCategories()
-      ];
-      final List<dynamic> responses = await Future.wait(apiCalls);
-      closeLoaderDialog();
-      if (responses.every((response) => response.httpcode == 200)) {
-        final accountResponse = responses[0] as AccountModel;
-        final termsAndConditionsResponse =
-            responses[1] as TermsAndConditionsModel;
-        final categoriesResponse = responses[2] as CategoriesModel;
-        emit(state.copyWith(
-          basicDetails: accountResponse.data.basicDetails,
-          businessDetails: accountResponse.data.businessDetails,
-          bankDetails: accountResponse.data.bankDetails,
-          businessDocuments:
-              accountResponse.data.businessDetails.businessDocuments,
-          categoryList: categoriesResponse.data.categoryList,
-          termsAndConditionsData: termsAndConditionsResponse.data,
-        ));
-      } else {
-        final errorMessages = responses
-            .where((response) =>
-                response is SuccessModel && response.httpcode != 200)
-            .map((response) => response.message.toString())
-            .toList();
-        showSnackBar(context: context, msg: errorMessages.toString());
+      try {
+        final List<Future<dynamic>> apiCalls = [
+          Repository().getAccountDetails(),
+          Repository().getTermsAndConditions(),
+          Repository().getCategories()
+        ];
+        final List<dynamic> responses = await Future.wait(apiCalls);
+        closeLoaderDialog();
+        if (responses.every((response) => response.httpcode == 200)) {
+          final accountResponse = responses[0] as AccountModel;
+          final termsAndConditionsResponse =
+              responses[1] as TermsAndConditionsModel;
+          final categoriesResponse = responses[2] as CategoriesModel;
+          emit(state.copyWith(
+            basicDetails: accountResponse.data.basicDetails,
+            businessDetails: accountResponse.data.businessDetails,
+            bankDetails: accountResponse.data.bankDetails,
+            businessDocuments:
+                accountResponse.data.businessDetails.businessDocuments,
+            categoryList: categoriesResponse.data.categoryList,
+            termsAndConditionsData: termsAndConditionsResponse.data,
+          ));
+        } else {
+          final errorMessages = responses
+              .where((response) =>
+                  response is SuccessModel && response.httpcode != 200)
+              .map((response) => response.message.toString())
+              .toList();
+          showSnackBar(context: context, msg: errorMessages.toString());
+        }
+      } on Exception catch (e) {
+        showSnackBar(context: context, msg: e.toString());
+        closeLoaderDialog();
       }
     });
 

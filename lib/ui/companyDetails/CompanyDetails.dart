@@ -164,11 +164,11 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                                         ],
                                       ),
                                     ),
-                                    InkWell(
+                                    /*InkWell(
                                       onTap: ()=> context.read<AccountBloc>().deleteBusinessDoc(docs!.id,i),
                                       child: CustomImageView(
                                           imagePath: icDelete, height: 18),
-                                    ),
+                                    ),*/
                                   ],
                                 ),
                               );

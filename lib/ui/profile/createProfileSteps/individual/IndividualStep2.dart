@@ -67,7 +67,7 @@ class IndividualStep2 extends StatelessWidget {
                         return;
                       }
                       dobController.text =
-                          pickedDate.toIso8601String().toDD_MM_YYYY();
+                          pickedDate.toIso8601String().toDMY();
                     });
                   },
                   child: CommonTextField(

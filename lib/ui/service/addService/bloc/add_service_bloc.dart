@@ -5,6 +5,8 @@ import 'package:g1c_vendor/data/model/success_model.dart';
 import 'package:g1c_vendor/data/repository/Repository.dart';
 import 'package:g1c_vendor/ui/service/addService/model/add_on_list_model.dart';
 import 'package:g1c_vendor/ui/service/addService/model/categories_model.dart';
+import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
+import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/loader.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import '../../../commonVerification/CommonVerificationProgress.dart';
@@ -17,7 +19,7 @@ part 'add_service_event.dart';
 part 'add_service_state.dart';
 
 class AddServiceBloc extends Bloc<AddServiceEvent, AddServiceState> {
-  AddServiceBloc(BuildContext context) : super(AddServiceState()) {
+  AddServiceBloc(BuildContext context, ServiceBloc serviceBloc) : super(AddServiceState()) {
     on<GetCategories>((event, emit) async {
       try {
         showLoaderDialog();
@@ -91,7 +93,7 @@ class AddServiceBloc extends Bloc<AddServiceEvent, AddServiceState> {
     });
 
     on<UpdateSelectCatId>((event, emit) async {
-      emit(state.copyWith(catId: event.catId,serviceName: event.categoryName));
+      emit(state.copyWith(catId: event.catId, serviceName: event.categoryName));
     });
 
     on<UpdateSelectServiceId>((event, emit) async {
@@ -99,28 +101,25 @@ class AddServiceBloc extends Bloc<AddServiceEvent, AddServiceState> {
           subCatId: event.serviceId, serviceName: event.serviceName));
     });
 
-
     on<AddValues>((event, emit) async {
-
-      if(event.type == "desc"){
+      if (event.type == "desc") {
         emit(state.copyWith(desc: event.value));
       }
-      if(event.type == "totalHours"){
+      if (event.type == "totalHours") {
         emit(state.copyWith(totalHours: event.value));
       }
-      if(event.type == "price"){
+      if (event.type == "price") {
         emit(state.copyWith(price: event.value));
       }
-      if(event.type == "disPrice"){
+      if (event.type == "disPrice") {
         emit(state.copyWith(disPrice: event.value));
       }
-      if(event.type == "startDate"){
+      if (event.type == "startDate") {
         emit(state.copyWith(startDate: event.value));
       }
-      if(event.type == "endDate"){
+      if (event.type == "endDate") {
         emit(state.copyWith(endDate: event.value));
       }
-
     });
 
     on<AddNewServiceToDraft>((event, emit) async {
@@ -134,28 +133,34 @@ class AddServiceBloc extends Bloc<AddServiceEvent, AddServiceState> {
             state.totalHours.toString(),
             state.price.toString(),
             state.disPrice.toString(),
-            state.startDate.toString(),
-            state.endDate.toString(),
+            state.startDate.toString().toYMD(),
+            state.endDate.toString().toYMD(),
             state.addOnList);
         closeLoaderDialog();
         if (res.httpcode == 200) {
-            navigateTo(context: context, destination: CommonVerificationProgress(
-                  title:
-                  "Complete Your Service for Admin Verification",
-                  message:
-                  "Basic details have been saved.\nWould you like to add the remaining details now?\nYou can also revisit and update these details later.\nPlease choose an option:\nAfter completing the form, your submission will go through a verification process by the admin.",
-                  cancelButtonText: "No, I’ll Do It Later",
-                  submitButtonText: "Yes, Add Now",
-                  onSubmit: () {
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    Navigator.pop(context);
-                    navigateTo(
-                        context: context,
-                        destination: AddMoreServices.builder(context,res.data.serviceId));
-                  },
-                ));
-            showSnackBar(context: context, msg: res.message);
+          navigateTo(
+              context: context,
+              destination: CommonVerificationProgress(
+                title: "Complete Your Service for Admin Verification",
+                message:
+                    "Basic details have been saved.\nWould you like to add the remaining details now?\nYou can also revisit and update these details later.\nPlease choose an option:\nAfter completing the form, your submission will go through a verification process by the admin.",
+                cancelButtonText: "No, I’ll Do It Later",
+                submitButtonText: "Yes, Add Now",
+                onCancel: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                    serviceBloc.getServiceListAndFilter(1, "");
+                },
+                onSubmit: () {
+                  Navigator.pop(context);
+                  Navigator.pop(context);
+                  navigateTo(
+                      context: context,
+                      destination:
+                          AddMoreServices.builder(context, res.data.serviceId,serviceBloc));
+                },
+              ));
+          showSnackBar(context: context, msg: res.message);
         } else {
           showSnackBar(context: context, msg: res.message);
         }
@@ -182,7 +187,7 @@ class AddServiceBloc extends Bloc<AddServiceEvent, AddServiceState> {
   }
 
   void updateSelectCatId(int id, String categoryName) {
-    add(UpdateSelectCatId(id,categoryName));
+    add(UpdateSelectCatId(id, categoryName));
   }
 
   void updateSelectServiceId(int id, String serviceName) {

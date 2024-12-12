@@ -8,6 +8,7 @@ class SessionManager {
   static const String USER_ID = "USER_ID";
   static const String PROFILE_IMAGE = "PROFILE_IMAGE";
   static const String USER_NAME = "USER_NAME";
+  static const String USER_BUSINESS_NAME = "USER_BUSINESS_NAME";
   static const String USER_EMAIL = "USER_EMAIL";
   static const String NOTIFICATION_COUNT = "NOTIFICATION_COUNT";
   static const String ORGANISATION_ID = "ORGANISATION_ID";
@@ -50,15 +51,17 @@ class SessionManager {
   int get userId => _generalPref?.getInt(USER_ID) ?? 0;
   set userId(int status) => _generalPref?.setInt(USER_ID, status) ?? 0;
 
+  String get userName => _generalPref?.getString(USER_NAME) ?? "";
+  set userName(String val) => _generalPref?.setString(USER_NAME, val) ?? "";
+
+  String get userBusinessName => _generalPref?.getString(USER_BUSINESS_NAME) ?? "";
+  set userBusinessName(String val) => _generalPref?.setString(USER_BUSINESS_NAME, val) ?? "";
+
   String get profileImage => _generalPref?.getString(PROFILE_IMAGE) ?? "";
   set profileImage(String status) => _generalPref?.setString(PROFILE_IMAGE, status) ?? "";
 
   int get organisationId => _generalPref?.getInt(ORGANISATION_ID) ?? 0;
   set organisationId(int status) => _generalPref?.setInt(ORGANISATION_ID, status) ?? 0;
-
-
-  String get userName => _generalPref?.getString(USER_NAME) ?? "";
-  set userName(String status) => _generalPref?.setString(USER_NAME, status) ?? "";
 
   String get role => _generalPref?.getString(ROLE) ?? "";
   set role(String status) => _generalPref?.setString(ROLE, status) ?? "";

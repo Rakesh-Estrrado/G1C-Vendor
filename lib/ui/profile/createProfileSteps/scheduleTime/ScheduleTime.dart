@@ -217,6 +217,9 @@ class _ScheduleTimeState extends State<ScheduleTime> {
                     message:
                         "You will be notified once we have reviewed\nyour identity verification in 1-2 working days.",
                     submitButtonText: "OK",
+                    onCancel: (){
+                      Navigator.pop(context);
+                    },
                     onSubmit: ()=>Navigator.of(context).pushAndRemoveUntil(
                         MaterialPageRoute(builder: (c) => LoginScreen.builder(context,from: "inner")),
                             (route) => false),

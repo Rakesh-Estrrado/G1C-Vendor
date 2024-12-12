@@ -27,7 +27,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return Background(
         isAuth: false,
         child: SingleChildScrollView(

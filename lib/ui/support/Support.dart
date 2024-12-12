@@ -3,6 +3,7 @@ import 'package:g1c_vendor/ui/support/createSupportToken.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/utils.dart';
+import 'package:g1c_vendor/utils/widgets/NoDataView.dart';
 import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
 
 class Support extends StatelessWidget {
@@ -16,7 +17,7 @@ class Support extends StatelessWidget {
         Expanded(
           child: Stack(
             children: [
-              ListView.builder(shrinkWrap: true,itemCount: 4  ,itemBuilder: (context,i){
+              true?NoDataView(msg: "No data to show..."):ListView.builder(shrinkWrap: true,itemCount: 4  ,itemBuilder: (context,i){
                 return Container(
                   padding: EdgeInsets.all(16),
                   margin: EdgeInsets.symmetric(vertical: 4),

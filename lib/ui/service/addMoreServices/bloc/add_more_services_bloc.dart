@@ -3,8 +3,10 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:g1c_vendor/data/model/success_model.dart';
 import 'package:g1c_vendor/data/repository/Repository.dart';
+import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
 import 'package:g1c_vendor/ui/service/serviceDetails/model/service_details_model.dart';
 import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/loader.dart';
@@ -19,7 +21,7 @@ part 'add_more_services_state.dart';
 
 class AddMoreServicesBloc
     extends Bloc<AddMoreServicesEvent, AddMoreServicesState> {
-  AddMoreServicesBloc(BuildContext context) : super(AddMoreServicesState()) {
+  AddMoreServicesBloc(BuildContext context, ServiceBloc serviceBloc) : super(AddMoreServicesState()) {
     on<GetServiceDetails>((event, emit) async {
       showLoaderDialog();
       final List<Future<dynamic>> apiCalls = [
@@ -44,8 +46,8 @@ class AddMoreServicesBloc
             disPrice: serviceDetailResponse
                 .serviceData.first.serviceDiscountPrice
                 .toString(),
-            startDate: serviceDetailResponse.serviceData.first.disStartDate.toDD_MM_YYYY(),
-            endDate: serviceDetailResponse.serviceData.first.disEndDate.toDD_MM_YYYY(),
+            startDate: serviceDetailResponse.serviceData.first.disStartDate.toDMY(),
+            endDate: serviceDetailResponse.serviceData.first.disEndDate.toDMY(),
             addOnList: addOnListResponse.data.addonList,
             serviceAddon:
                 serviceDetailResponse.serviceData.first.serviceAddons));
@@ -118,7 +120,7 @@ class AddMoreServicesBloc
             event.isChecked;
       }
       emit(state.copyWith(
-          preferenceList: updatedPreferences, isUpdated: !state.isUpdated));
+            preferenceList: updatedPreferences, isUpdated: !state.isUpdated));
     });
 
     on<UpdatePreferences>((event, emit) async {
@@ -201,6 +203,8 @@ class AddMoreServicesBloc
 
     on<UpdateServiceMedia>((event, emit) async {
       try {
+
+
         showLoaderDialog();
         var serviceData = state.serviceData.first;
         List<String> filePaths = [];
@@ -209,11 +213,19 @@ class AddMoreServicesBloc
             filePaths.add(e.filePath);
           }
         });
+        if(filePaths.isEmpty){
+          submitServiceApproval(event.serviceId);
+          return;
+        }
         SuccessModel response =
             await Repository().updateServiceMedia(event.serviceId, filePaths);
         closeLoaderDialog();
         if (response.httpcode == 200) {
-          showSnackBar(context: context, msg: response.message);
+          if(event.submit){
+            submitServiceApproval(event.serviceId);
+          }else{
+            showSnackBar(context: context, msg: response.message);
+          }
         } else {
           showSnackBar(context: context, msg: response.message);
         }
@@ -245,9 +257,15 @@ class AddMoreServicesBloc
               title: "Form Submission Successful",
               message:
               "Your form has been completed and submitted\nfor admin verification.",
+              onCancel: (){
+                Navigator.pop(context);
+                Navigator.pop(context);
+                serviceBloc.getServiceListAndFilter(1, "");
+              },
               onSubmit: () {
                 Navigator.pop(context);
                 Navigator.pop(context);
+                Future.delayed(Duration(milliseconds: 500),(){serviceBloc.getServiceListAndFilter(1, "");});
               },
             ));
 
@@ -299,8 +317,8 @@ class AddMoreServicesBloc
     add(UpdatePreferences(serviceId));
   }
 
-  void updateServiceMedia(int serviceId) {
-    add(UpdateServiceMedia(serviceId));
+  void updateServiceMedia(int serviceId, bool submit) {
+    add(UpdateServiceMedia(serviceId,submit));
   }
   void submitServiceApproval(int serviceId) {
     add(SubmitServiceApproval(serviceId));

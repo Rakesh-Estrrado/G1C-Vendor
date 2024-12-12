@@ -7,6 +7,9 @@ import 'package:g1c_vendor/utils/image_constant.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../di/AppLocator.dart';
+import '../sessionManager.dart';
+
 
 class CustomAppBar extends StatelessWidget {
   final String title;
@@ -16,6 +19,8 @@ class CustomAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final sessionManager = AppLocator.instance<SessionManager>();
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,7 +40,7 @@ class CustomAppBar extends StatelessWidget {
                 style: textStyleRegular.copyWith(fontSize: 14.sp),
               ),
               TextSpan(
-                text: 'John Doe',
+                text: '${sessionManager.userName}',
                 style: textStyleSemiBoldLarge,
               ),
             ],

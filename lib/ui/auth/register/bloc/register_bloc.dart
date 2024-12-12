@@ -20,7 +20,6 @@ part 'register_state.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc(BuildContext context) : super(RegisterState()) {
-
     on<SendOTP>((event, emit) async {
       try {
         showLoaderDialog();
@@ -56,7 +55,6 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
         if (response.httpcode == 200) {
           showSnackBar(context: context, msg: response.message);
-          // sessionManager.sellerId = response.data;
             Navigator.pop(context);
             navigateTo(context: context, destination: CreateProfile.builder(context,event.phoneNo,event.countryCode));
         }

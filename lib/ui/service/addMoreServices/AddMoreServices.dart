@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:g1c_vendor/ui/commonVerification/CommonVerificationProgress.dart';
 import 'package:g1c_vendor/ui/service/addMoreServices/bloc/add_more_services_bloc.dart';
+import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
 import 'package:g1c_vendor/ui/service/serviceDetails/model/service_details_model.dart';
 import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/background.dart';
@@ -24,9 +25,10 @@ class AddMoreServices extends StatefulWidget {
 
   AddMoreServices({super.key, this.serviceId});
 
-  static Widget builder(BuildContext context, int id) {
+  static Widget builder(BuildContext context, int id, ServiceBloc serviceBloc) {
     return BlocProvider(
-      create: (context) => AddMoreServicesBloc(context)..getServiceDetails(id),
+      create: (context) =>
+          AddMoreServicesBloc(context, serviceBloc)..getServiceDetails(id),
       child: AddMoreServices(serviceId: id),
     );
   }
@@ -160,7 +162,6 @@ class _AddMoreServicesState extends State<AddMoreServices> {
     // var startDateController = TextEditingController(text: service.disStartDate.toDD_MM_YYYY());
     // var endDateController = TextEditingController(text: state.disEndDate.toDD_MM_YYYY());
 
-
     return SingleChildScrollView(
         child: Padding(
       padding: const EdgeInsets.all(12.0),
@@ -169,7 +170,8 @@ class _AddMoreServicesState extends State<AddMoreServices> {
         SizedBox(height: 6),
         Text(service.serviceName, style: textStyleSemiBold),
         SizedBox(height: 20),
-        Text("Service Category", style: textStyleRegular.copyWith(fontSize: 14.5.sp)),
+        Text("Service Category",
+            style: textStyleRegular.copyWith(fontSize: 14.5.sp)),
         SizedBox(height: 6),
         Text(service.serviceCategory, style: textStyleSemiBold),
         SizedBox(height: 20),
@@ -227,11 +229,14 @@ class _AddMoreServicesState extends State<AddMoreServices> {
           children: [
             Expanded(
                 child: BlocBuilder<AddMoreServicesBloc, AddMoreServicesState>(
-              buildWhen: (previous, current) => previous.startDate != current.startDate,
+              buildWhen: (previous, current) =>
+                  previous.startDate != current.startDate,
               builder: (context, state) {
-                var startDateController= TextEditingController(text: state.startDate) ;
+                var startDateController =
+                    TextEditingController(text: state.startDate);
                 return InkWell(
-                  onTap: () => showDatePickerDialog("startDate", state.startDate),
+                  onTap: () =>
+                      showDatePickerDialog("startDate", state.startDate),
                   child: CommonTextField(
                       labelText: "Discount Start Date",
                       hintText: "DD/MM/YYYY",
@@ -245,12 +250,15 @@ class _AddMoreServicesState extends State<AddMoreServices> {
             SizedBox(width: 20),
             Expanded(
               child: BlocBuilder<AddMoreServicesBloc, AddMoreServicesState>(
-                buildWhen: (previous, current) => previous.endDate != current.endDate || previous.startDate != current.startDate,
+                buildWhen: (previous, current) =>
+                    previous.endDate != current.endDate ||
+                    previous.startDate != current.startDate,
                 builder: (context, state) {
-
-                  var endDateController= TextEditingController(text: state.endDate) ;
+                  var endDateController =
+                      TextEditingController(text: state.endDate);
                   return InkWell(
-                    onTap: () => showDatePickerDialog("endDate", state.startDate),
+                    onTap: () =>
+                        showDatePickerDialog("endDate", state.startDate),
                     child: CommonTextField(
                         labelText: "Discount End Date",
                         hintText: "DD/MM/YYYY",
@@ -264,7 +272,7 @@ class _AddMoreServicesState extends State<AddMoreServices> {
           ],
         ),
         SizedBox(height: 20),
-        addOnsWidget(),
+        serviceData.first.categoryId != 3 ? addOnsWidget() : SizedBox(),
         SizedBox(height: 40),
         Align(
             alignment: Alignment.bottomRight,
@@ -357,7 +365,10 @@ class _AddMoreServicesState extends State<AddMoreServices> {
           ActionButtonsRow(
               onCancel: () =>
                   addMoreServicesBloc.updatePreferences(widget.serviceId),
-              onSubmit: () => selectedTab.value = 2,
+              onSubmit: () {
+                addMoreServicesBloc.updatePreferences(widget.serviceId);
+                selectedTab.value = 2;
+              },
               cancelText: "Save To Drafts",
               submitText: "Next"),
           SizedBox(height: 20),
@@ -471,8 +482,10 @@ class _AddMoreServicesState extends State<AddMoreServices> {
         ),
         Spacer(),
         ActionButtonsRow(
-            onCancel: () => addMoreServicesBloc.updateServiceMedia(widget.serviceId),
-            onSubmit: () => addMoreServicesBloc.submitServiceApproval(widget.serviceId),
+            onCancel: () =>
+                addMoreServicesBloc.updateServiceMedia(widget.serviceId, false),
+            onSubmit: () =>
+                  addMoreServicesBloc.updateServiceMedia(widget.serviceId, true),
             cancelText: "Save To Drafts")
       ],
     );
@@ -532,7 +545,7 @@ class _AddMoreServicesState extends State<AddMoreServices> {
       if (pickedDate == null) {
         return;
       }
-      var date = pickedDate.toIso8601String().toDD_MM_YYYY();
+      var date = pickedDate.toIso8601String().toDMY();
       addMoreServicesBloc.addValues(date, type);
     });
   }
@@ -623,7 +636,7 @@ class _AddMoreServicesState extends State<AddMoreServices> {
                         children: [
                           Expanded(
                             child: CommonDropDown(
-                              labelText: "Service Category",
+                              labelText: "AddOns",
                               dropDownList: addOnLists,
                               onSelected: (val) {
                                 selectedAddOnName = val;
@@ -693,7 +706,9 @@ class _AddMoreServicesState extends State<AddMoreServices> {
                                         hintText: "Duration",
                                         keyboardType: TextInputType.number,
                                         controller: addOnsTime,
-                                        onChanged: (val) => addMoreServicesBloc.addOnListValues(val, "duration",i));
+                                        onChanged: (val) =>
+                                            addMoreServicesBloc.addOnListValues(
+                                                val, "duration", i));
                                   },
                                 ),
                                 SizedBox(height: 20),
@@ -702,7 +717,8 @@ class _AddMoreServicesState extends State<AddMoreServices> {
                                     hintText: "0",
                                     keyboardType: TextInputType.number,
                                     controller: addOnsPrice,
-                                    onChanged: (val) => addMoreServicesBloc.addOnListValues(val, "price",i)),
+                                    onChanged: (val) => addMoreServicesBloc
+                                        .addOnListValues(val, "price", i)),
                                 SizedBox(height: 30),
                               ],
                             );

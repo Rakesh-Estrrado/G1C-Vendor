@@ -182,6 +182,7 @@ Future<File?> pickFile(
       } else {
         imgSource = ImageSource.camera;
       }
+
       final pickedImage = await ImagePicker().pickImage(source: imgSource);
       if (pickedImage != null) {
         return File(pickedImage.path);
@@ -195,6 +196,36 @@ Future<File?> pickFile(
   }
   return null;
 }
+
+Future<List<File>?> pickMultipleImages(String imageSource, BuildContext context) async {
+  try {
+    if (imageSource == "gallery") {
+      final pickedImages = await ImagePicker().pickMultiImage(imageQuality: 80); // Optional: Set quality
+      if (pickedImages.isNotEmpty) {
+        return pickedImages.map((pickedImage) => File(pickedImage.path)).toList();
+      } else {
+        showSnackBar(context: context, msg: "No images selected");
+        return null;
+      }
+    } else if (imageSource == "camera") {
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera, imageQuality: 80); // Optional: Set quality
+      if (pickedImage != null) {
+        return [File(pickedImage.path)];
+      } else {
+        showSnackBar(context: context, msg: "No image captured");
+        return null;
+      }
+    } else {
+      showSnackBar(context: context, msg: "Invalid image source");
+      return null;
+    }
+  } catch (e) {
+    print('Error picking file or image: $e');
+    showSnackBar(context: context, msg: 'Error picking file or image');
+    return null;
+  }
+}
+
 
 Future<String> getFileNameWithExtension(File file) async {
   if (await file.exists()) {
@@ -377,7 +408,7 @@ Future<void> handleFilePick(
 
 
 extension DateFormatExtension on String {
-  String toDD_MM_YYYY() {
+  String toDMY() {
     try {
       if (this.isNotEmpty || this != "null" || this != null) {
         DateTime dateTime = DateTime.parse(this);
@@ -390,7 +421,7 @@ extension DateFormatExtension on String {
       return '';
     }
   }
-  String toYYYYMMDD() {
+  String toYMD() {
     try {
       if (this.isNotEmpty || this != "null" || this != null) {
         DateTime dateTime = DateFormat("dd-MM-yyyy").parse(this);
@@ -401,6 +432,19 @@ extension DateFormatExtension on String {
       }
     } catch (e) {
       return '';
+    }
+  }
+
+  DateTime toDateTime() {
+    try {
+      if (this.isNotEmpty || this != "null" || this != null) {
+        DateTime dateTime = DateFormat("dd-MM-yyyy").parse(this);
+        return dateTime;
+      } else {
+        return DateTime.now();
+      }
+    } catch (e) {
+      return DateTime.now();
     }
   }
 }
@@ -435,3 +479,28 @@ extension FileNameExtractor on String {
     return this.split('/').last;
   }
 }
+
+
+
+void showDatePickerDialog(
+    BuildContext context,
+    Function(String) dateChosen, {
+      bool showPreviousDates = true,
+      bool isEndDate = false,
+      String initialDate = "",  String endDate = "",
+    }) {
+  DateTime parsedInitialDate = initialDate.toDateTime();
+  DateTime parsedEndDate = endDate.toDateTime();
+  print("hello $parsedEndDate");
+  showDatePicker(
+    context: context,
+    initialDate: parsedInitialDate,
+    firstDate: showPreviousDates ? DateTime(1900) : isEndDate?parsedEndDate:DateTime.now(),
+    lastDate: DateTime(2900),
+  ).then((pickedDate) {
+    if (pickedDate == null) return;
+
+    dateChosen(pickedDate.toIso8601String().toDMY());
+  });
+}
+

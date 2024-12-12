@@ -173,6 +173,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             event.slotType);
         closeLoaderDialog();
         if (response.httpcode == 200) {
+
           final updatedSchedulesList =
               List<SchedulesList>.from(state.schedulesList);
           var newTimeSlot = TimeSlot(

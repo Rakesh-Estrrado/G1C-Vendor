@@ -50,7 +50,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            const CustomAppBar(title: "Service"),
+            const CustomAppBar(title: "Services"),
             const SizedBox(height: 10),
             Row(
               children: [
@@ -115,7 +115,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                   child: RoundAddButton(
                     onTap: () => navigateTo(
                         context: context,
-                        destination: AddService.builder(context)),
+                        destination: AddService.builder(context,serviceBloc)),
                   ),
                 )
               ],
@@ -164,10 +164,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                       itemBuilder: (context, i) {
                         var serviceList = state.servicesList[i];
                         return InkWell(
-                          onTap: () => navigateTo(
-                              context: context,
-                              destination: ServiceDetails.builder(
-                                  context, serviceList.id)),
+                          onTap: () => navigateTo(context: context, destination: ServiceDetails.builder(context, serviceList.id)),
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 4.0),
                             child: Card(
@@ -212,7 +209,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 onChanged: (val) => serviceBloc
                                                     .updateServiceStatus(
                                                         serviceList.id, i))
-                                            : Container(
+                                            :serviceList.approvalStatus==2? Container(
                                                 decoration: BoxDecoration(
                                                     color: cardOrange,
                                                     borderRadius:
@@ -225,14 +222,19 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                       horizontal: 8.0,
                                                       vertical: 2.0),
                                                   child: Text(
-                                                      "Pending For Approval",
-                                                      style: textStyleRegular
-                                                          .copyWith(
-                                                              color: serviceList
-                                                                          .approvalStatus ==
-                                                                      1
-                                                                  ? switchGreen
-                                                                  : orange)),
+                                                      "Rejected",
+                                                      style: textStyleRegular.copyWith(color: red)),
+                                                ),
+                                              ) :Container(
+                                                decoration: BoxDecoration(
+                                                    color: cardOrange,
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                4.0))),
+                                                child: Padding(
+                                                  padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 2.0),
+                                                  child: Text("Pending For Approval", style: textStyleRegular.copyWith(color: orange)),
                                                 ),
                                               )
                                       ],
@@ -257,7 +259,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                                 context: context,
                                                 destination:
                                                     AddMoreServices.builder(
-                                                        context,serviceList.id)),
+                                                        context,serviceList.id,serviceBloc)),
                                             child: Material(
                                                 color: Colors.transparent,
                                                 child: CustomImageView(

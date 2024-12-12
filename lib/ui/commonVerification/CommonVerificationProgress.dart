@@ -16,6 +16,7 @@ class CommonVerificationProgress extends StatelessWidget {
   final cancelButtonText;
   final submitButtonText;
   final Function() onSubmit;
+  final Function() onCancel;
 
   const CommonVerificationProgress(
       {super.key,
@@ -23,13 +24,14 @@ class CommonVerificationProgress extends StatelessWidget {
       this.message,
       this.cancelButtonText = "",
       this.submitButtonText,
-      required this.onSubmit});
+      required this.onSubmit,
+      required this.onCancel});
 
   @override
   Widget build(BuildContext context) {
     return Background(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 48.0),
@@ -48,29 +50,22 @@ class CommonVerificationProgress extends StatelessWidget {
                   style: textStyleSmall.copyWith(color: white.withOpacity(0.5)),
                   textAlign: TextAlign.center),
               const SizedBox(height: 36),
-
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 12.0),
           child: cancelButtonText.isEmpty
-              ? CommonButton(
-            label: "Ok",
-            onTap: () => onSubmit())
+              ? CommonButton(label: "Ok", onTap: () => onSubmit())
               : Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                child: ActionButtonsRow(
-                            onCancel: () {
-                HapticFeedback.selectionClick();
-                Navigator.pop(context);
-                Navigator.pop(context);
-                            },
-                            onSubmit: () => onSubmit(),
-                            submitText: submitButtonText,
-                            cancelText: cancelButtonText,
-                          ),
-              ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                  child: ActionButtonsRow(
+                    onCancel: () => onCancel(),
+                    onSubmit: () => onSubmit(),
+                    submitText: submitButtonText,
+                    cancelText: cancelButtonText,
+                  ),
+                ),
         )
       ],
     ));

@@ -8,12 +8,14 @@ import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/CommonButton.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../../utils/widgets/NoDataView.dart';
+
 class NewBookings extends StatelessWidget {
   const NewBookings({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return true?NoDataView(msg: "No bookings to show.."):ListView.builder(
         shrinkWrap: true,
         itemCount: 10,
         itemBuilder: (context, i) {

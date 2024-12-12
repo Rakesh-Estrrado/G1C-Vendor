@@ -20,10 +20,10 @@ class RegisterModel {
     String status;
 
     factory RegisterModel.fromJson(Map<dynamic, dynamic> json) => RegisterModel(
-        data: Data.fromJson(json["data"]),
-        message: json["message"],
-        httpcode: json["httpcode"],
-        status: json["status"],
+        data: Data.fromJson(json["data"]??{}),
+        message: json["message"]??"",
+        httpcode: json["httpcode"]??0,
+        status: json["status"]??"",
     );
 
     Map<dynamic, dynamic> toJson() => {

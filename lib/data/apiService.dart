@@ -195,7 +195,7 @@ class ApiService {
   Future<LoginOtpModel> verifyOTPLogin(
       String phoneNumber, String countryCode, String otp) async {
     try {
-      print("why...2again ${sessionManager.sellerId}");
+
       var deviceInfo = await getDeviceDetails();
       final response = await dio.post("$baseUrl/seller/confirm-otp",
           data: {
@@ -599,7 +599,8 @@ class ApiService {
       String endDate,
       List<AddServiceAddOns> addOnList) async {
     try {
-      final data = {
+      FormData data = FormData.fromMap(
+      {
         "access_token": sessionManager.token,
         "category_id": catId,
         "subcategory_id": subCatId,
@@ -611,14 +612,18 @@ class ApiService {
         "discount_start_date": startDate,
         "discount_end_date": endDate,
         "save_as_draft": 1,
-      };
 
-      for (int i = 0; i < addOnList.length; i++) {
-        final addon = addOnList[i];
-        data["addons[$i][addon_id]"] = addon.id;
-        data["addons[$i][time]"] = addon.time.text;
-        data["addons[$i][price]"] = addon.price.text;
-      }
+        ...addOnList
+            .asMap()
+            .map((i, addon) => MapEntry("addons[$i][addon_id]", addon.id))
+          ..addAll(addOnList
+              .asMap()
+              .map((i, addon) => MapEntry("addons[$i][time]", addon.time.text)))
+          ..addAll(addOnList
+              .asMap()
+              .map((i, addon) => MapEntry("addons[$i][price]", addon.price.text))),
+      });
+
 
       final response =
           await dio.post("$baseUrl/seller/add-service-basic-details",
@@ -824,8 +829,8 @@ class ApiService {
         "total_hours": totalHours,
         "price": price,
         "discount_price": disPrice,
-        "discount_start_date": startDate.toYYYYMMDD(),
-        "discount_end_date": endDate.toYYYYMMDD(),
+        "discount_start_date": startDate.toYMD(),
+        "discount_end_date": endDate.toYMD(),
         "save_as_draft": 1,
         // Add dynamic fields for addons
         ...addOnList

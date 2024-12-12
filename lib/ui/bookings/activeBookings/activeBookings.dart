@@ -4,6 +4,7 @@ import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/image_constant.dart';
 import 'package:g1c_vendor/utils/utils.dart';
+import 'package:g1c_vendor/utils/widgets/NoDataView.dart';
 import 'package:g1c_vendor/utils/widgets/sliderWidget.dart';
 import 'package:sizer/sizer.dart';
 
@@ -12,9 +13,9 @@ class ActiveBookings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return true?NoDataView(msg: "No bookings to show.."):ListView.builder(
         shrinkWrap: true,
-        itemCount: 10,
+        itemCount: 0,
         itemBuilder: (context, i) {
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 8.0),

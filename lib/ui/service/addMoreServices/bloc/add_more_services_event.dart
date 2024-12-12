@@ -39,8 +39,6 @@ class CheckPreference extends AddMoreServicesEvent {
   List<Object?> get props => [parentIndex, valueIndex, type];
 }
 
-
-
 class AddValues extends AddMoreServicesEvent {
   final String value;
   final String type;
@@ -48,9 +46,8 @@ class AddValues extends AddMoreServicesEvent {
   const AddValues(this.value, this.type);
 
   @override
-  List<Object?> get props => [value,type];
+  List<Object?> get props => [value, type];
 }
-
 
 class AddOnListValues extends AddMoreServicesEvent {
   final String value;
@@ -60,9 +57,8 @@ class AddOnListValues extends AddMoreServicesEvent {
   const AddOnListValues(this.value, this.type, this.index);
 
   @override
-  List<Object?> get props => [value,type,index];
+  List<Object?> get props => [value, type, index];
 }
-
 
 class AddServiceMedia extends AddMoreServicesEvent {
   final File image;
@@ -72,8 +68,6 @@ class AddServiceMedia extends AddMoreServicesEvent {
   @override
   List<Object?> get props => [image];
 }
-
-
 
 class DeleteServiceMedia extends AddMoreServicesEvent {
   final int index;
@@ -93,42 +87,47 @@ class AddServiceAddOnList extends AddMoreServicesEvent {
   final String name;
   final bool isAdd;
   final int index;
-  const AddServiceAddOnList(this.id, this.name, this.isAdd, this.index, this.serviceId, this.addOnId);
+
+  const AddServiceAddOnList(
+      this.id, this.name, this.isAdd, this.index, this.serviceId, this.addOnId);
 
   @override
-  List<Object?> get props => [id, name, isAdd, index,serviceId,addOnId];
+  List<Object?> get props => [id, name, isAdd, index, serviceId, addOnId];
 }
-
 
 class UpdateServiceBasic extends AddMoreServicesEvent {
   final int serviceId;
+
   const UpdateServiceBasic(this.serviceId);
+
   @override
   List<Object?> get props => [serviceId];
 }
-
-
 
 class UpdatePreferences extends AddMoreServicesEvent {
   final int serviceId;
+
   const UpdatePreferences(this.serviceId);
+
   @override
   List<Object?> get props => [serviceId];
 }
-
 
 class UpdateServiceMedia extends AddMoreServicesEvent {
   final int serviceId;
-  const UpdateServiceMedia(this.serviceId);
+  final bool submit;
+
+  const UpdateServiceMedia(this.serviceId, this.submit);
+
   @override
   List<Object?> get props => [serviceId];
 }
-
 
 class SubmitServiceApproval extends AddMoreServicesEvent {
   final int serviceId;
+
   const SubmitServiceApproval(this.serviceId);
+
   @override
   List<Object?> get props => [serviceId];
 }
-

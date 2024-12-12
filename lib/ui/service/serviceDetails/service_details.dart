@@ -15,7 +15,6 @@ class ServiceDetails extends StatelessWidget {
   final ValueNotifier<int> selectedTab = ValueNotifier(0);
   final List<String> tabs = ["Details", "Preferences"];
 
-
   static Widget builder(BuildContext context, int id) {
     return BlocProvider(
         create: (context) => ServiceDetailsBloc(context)..getServiceDetails(id),
@@ -24,6 +23,7 @@ class ServiceDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var serviceMediaIndex = ValueNotifier(0);
     return Background(
       child: BlocBuilder<ServiceDetailsBloc, ServiceDetailsState>(
         buildWhen: (previous, current) => previous != current,
@@ -39,148 +39,177 @@ class ServiceDetails extends StatelessWidget {
             width: 100.w,
             child: Stack(
               children: [
-                state.isLoading?SizedBox():state.serviceData.isEmpty?NoDataView(msg: ""):CustomImageView(
-                  imagePath: serviceData!.serviceMedia.isEmpty?"":serviceData.serviceMedia[0].filePath,
-                  height: 250,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
+                state.isLoading
+                    ? SizedBox()
+                    : state.serviceData.isEmpty
+                        ? NoDataView(msg: "")
+                        : ValueListenableBuilder(
+                            valueListenable: serviceMediaIndex,
+                            builder: (context, val, child) {
+                              return CustomImageView(
+                                  imagePath: serviceData!.serviceMedia.isEmpty
+                                      ? ""
+                                      : serviceData
+                                          .serviceMedia[serviceMediaIndex.value]
+                                          .filePath,
+                                  height: 250,
+                                  width: double.infinity,
+                                  fit: BoxFit.cover);
+                            }),
                 Positioned(
-                  top: 10,
-                  left: 10,
-                  child: InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Container(
-                      height: 40,
-                      width: 40,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.black45,
-                      ),
-                      child: Center(
-                          child: Icon(Icons.arrow_back, color: Colors.white)),
-                    ),
-                  ),
-                ),
-                state.isLoading?SizedBox():state.serviceData.isEmpty?NoDataView(msg: ""):Positioned(
-                  top: 160,
-                  left: 1,
-                  right: 1,
-                  child: InkWell(
-                    onTap: () => Navigator.pop(context),
-                    child: Center(
-                      child: SizedBox(
-                        height: 45,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemCount: serviceData?.serviceMedia.length,
-                          itemBuilder: (context, i) {
-                            var imageUrl = serviceData?.serviceMedia[i].filePath;
-                            return Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 4.0),
-                              child: CustomImageView(
-                                imagePath: imageUrl,
+                    top: 10,
+                    left: 10,
+                    child: InkWell(
+                        onTap: () => Navigator.pop(context),
+                        child: Container(
+                            height: 40,
+                            width: 40,
+                            decoration: BoxDecoration(
+                                shape: BoxShape.circle, color: Colors.black45),
+                            child: Center(
+                                child: Icon(Icons.arrow_back,
+                                    color: Colors.white))))),
+                state.isLoading
+                    ? SizedBox()
+                    : state.serviceData.isEmpty
+                        ? NoDataView(msg: "")
+                        : Positioned(
+                            top: 160,
+                            left: 1,
+                            right: 1,
+                            child: Center(
+                              child: SizedBox(
                                 height: 45,
-                                width: 45,
-                                fit: BoxFit.cover,
-                                radius: BorderRadius.circular(10.0),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-                state.isLoading?SizedBox():state.serviceData.isEmpty?NoDataView(msg: "No Service Details Found."):Positioned(
-                  top: 200,
-                  left: 1,
-                  right: 1,
-                  child: Container(
-                    height: 80.h,
-                    margin: EdgeInsets.all(20),
-                    padding: EdgeInsets.all(12),
-                    decoration: semiCircleBox(color: darkBlue, radius: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text("${serviceData?.serviceName}",
-                            style: textStyleSemiBoldMedium),
-                        SizedBox(height: 6),
-                        gradientContainer(
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                                left: 8.0, right: 8.0, top: 4.0),
-                            child: Wrap(
-                              children: [
-                                Text("RM ${serviceData?.servicePrice.toStringAsFixed(2)}",
-                                    style: textStyleSemiBold.copyWith(
-                                        color: Colors.white,
-                                        fontSize: 14.sp,
-                                        decoration: TextDecoration.lineThrough,
-                                        decorationColor: Colors.white)),
-                                Text(
-                                    "  RM ${serviceData?.serviceDiscountPrice.toStringAsFixed(2)}",
-                                    style: textStyleSemiBold.copyWith(
-                                        color: Colors.white, fontSize: 14.sp)),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Container(
-                          decoration: BoxDecoration(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(10.0)),
-                            color: darkBlue200,
-                          ),
-                          height: 40,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 16.0, vertical: 4.0),
-                            child: ValueListenableBuilder(
-                              valueListenable: selectedTab,
-                              builder: (context, _, __) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: tabs.asMap().entries.map((entry) {
-                                    int index = entry.key;
-                                    var tab = entry.value;
-                                    return Expanded(
-                                      child: Center(
-                                        child: buildTabHead(tab, index),
+                                child: ListView.builder(
+                                  scrollDirection: Axis.horizontal,
+                                  shrinkWrap: true,
+                                  itemCount: serviceData?.serviceMedia.length,
+                                  itemBuilder: (context, i) {
+                                    var imageUrl =
+                                        serviceData?.serviceMedia[i].filePath;
+                                    return Padding(
+                                      padding:
+                                          EdgeInsets.symmetric(horizontal: 4.0),
+                                      child: InkWell(
+                                        onTap: () =>
+                                            serviceMediaIndex.value = i,
+                                        child: CustomImageView(
+                                          imagePath: imageUrl,
+                                          height: 45,
+                                          width: 45,
+                                          fit: BoxFit.cover,
+                                          radius: BorderRadius.circular(10.0),
+                                        ),
                                       ),
                                     );
-                                  }).toList(),
-                                );
-                              },
+                                  },
+                                ),
+                              ),
                             ),
                           ),
-                        ),
-                        SizedBox(height: 12),
-                        ValueListenableBuilder(
-                          valueListenable: selectedTab,
-                          builder: (context, _, __) {
-                            switch (selectedTab.value) {
-                              case 0:
-                                return Expanded(
-                                    child: ServiceDetailsWidget(serviceData));
-                              case 1:
-                                return Expanded(
-                                    child: ServiceDetailsPreferenceWidget(preferenceList));
-                              default:
-                                return const Text("Default case");
-                            }
-                          },
-                        )
-                      ],
-                    ),
-                  ),
-                ),
+                state.isLoading
+                    ? SizedBox()
+                    : state.serviceData.isEmpty
+                        ? NoDataView(msg: "No Service Details Found.")
+                        : Positioned(
+                            top: 200,
+                            left: 1,
+                            right: 1,
+                            child: Container(
+                              height: 80.h,
+                              margin: EdgeInsets.all(20),
+                              padding: EdgeInsets.all(12),
+                              decoration:
+                                  semiCircleBox(color: darkBlue, radius: 10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text("${serviceData?.serviceName}",
+                                      style: textStyleSemiBoldMedium),
+                                  SizedBox(height: 6),
+                                  gradientContainer(
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(
+                                          left: 8.0, right: 8.0, top: 4.0),
+                                      child: Wrap(
+                                        children: [
+                                          Text(
+                                              "RM ${serviceData?.servicePrice.toStringAsFixed(2)}",
+                                              style: textStyleSemiBold.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp,
+                                                  decoration: TextDecoration
+                                                      .lineThrough,
+                                                  decorationColor:
+                                                      Colors.white)),
+                                          Text(
+                                              "  RM ${serviceData?.serviceDiscountPrice.toStringAsFixed(2)}",
+                                              style: textStyleSemiBold.copyWith(
+                                                  color: Colors.white,
+                                                  fontSize: 14.sp)),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  Container(
+                                    decoration: BoxDecoration(
+                                      borderRadius: const BorderRadius.all(
+                                          Radius.circular(10.0)),
+                                      color: darkBlue200,
+                                    ),
+                                    height: 40,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0, vertical: 4.0),
+                                      child: ValueListenableBuilder(
+                                        valueListenable: selectedTab,
+                                        builder: (context, _, __) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceEvenly,
+                                            children: tabs
+                                                .asMap()
+                                                .entries
+                                                .map((entry) {
+                                              int index = entry.key;
+                                              var tab = entry.value;
+                                              return Expanded(
+                                                child: Center(
+                                                  child:
+                                                      buildTabHead(tab, index),
+                                                ),
+                                              );
+                                            }).toList(),
+                                          );
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 12),
+                                  ValueListenableBuilder(
+                                    valueListenable: selectedTab,
+                                    builder: (context, _, __) {
+                                      switch (selectedTab.value) {
+                                        case 0:
+                                          return Expanded(
+                                              child: ServiceDetailsWidget(
+                                                  serviceData));
+                                        case 1:
+                                          return Expanded(
+                                              child:
+                                                  ServiceDetailsPreferenceWidget(
+                                                      preferenceList));
+                                        default:
+                                          return const Text("Default case");
+                                      }
+                                    },
+                                  )
+                                ],
+                              ),
+                            ),
+                          ),
               ],
             ),
           );
@@ -227,11 +256,13 @@ class ServiceDetails extends StatelessWidget {
               children: parentPreference.values.asMap().entries.map((entry) {
                 int index = entry.key;
                 var preferenceValue = entry.value;
-                  return preferenceValue.checked?Text(
-                  "${index == 0 ? "" : "| "} ${preferenceValue.value}",
-                  style: textStyleSemiBold,
-                  textAlign: TextAlign.center,
-                ):SizedBox();
+                return preferenceValue.checked
+                    ? Text(
+                        "${index == 0 ? "" : "| "} ${preferenceValue.value}",
+                        style: textStyleSemiBold,
+                        textAlign: TextAlign.center,
+                      )
+                    : SizedBox();
               }).toList(),
             ),
             SizedBox(height: 20),

@@ -68,6 +68,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         if (response.httpcode == 200) {
           sessionManager.isLogin = true;
           sessionManager.token = response.data.accessToken;
+          sessionManager.userName = response.data.userDetails.fname;
+          sessionManager.userBusinessName = response.data.userDetails.businessName;
+          sessionManager.profileImage = response.data.userDetails.profileImg;
           showSnackBar(context: context, msg: response.message);
           Navigator.pushAndRemoveUntil(
               context,

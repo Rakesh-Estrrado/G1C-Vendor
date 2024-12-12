@@ -2,7 +2,8 @@
 
 import 'dart:convert';
 
-LoginOtpModel loginOtpModelFromJson(String str) => LoginOtpModel.fromJson(json.decode(str));
+LoginOtpModel loginOtpModelFromJson(String str) =>
+    LoginOtpModel.fromJson(json.decode(str));
 
 String loginOtpModelToJson(LoginOtpModel data) => json.encode(data.toJson());
 
@@ -19,14 +20,14 @@ class LoginOtpModel {
     int httpcode;
     String status;
 
-    factory LoginOtpModel.fromJson(Map<dynamic, dynamic> json) => LoginOtpModel(
-        data: Data.fromJson(json["data"]),
-        message: json["message"],
-        httpcode: json["httpcode"],
-        status: json["status"],
+    factory LoginOtpModel.fromJson(Map<String, dynamic> json) => LoginOtpModel(
+        data: Data.fromJson(json["data"] ?? {}),
+        message: json["message"] ?? "",
+        httpcode: json["httpcode"] ?? 0,
+        status: json["status"] ?? "",
     );
 
-    Map<dynamic, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "data": data.toJson(),
         "message": message,
         "httpcode": httpcode,
@@ -43,12 +44,14 @@ class Data {
     String accessToken;
     UserDetails userDetails;
 
-    factory Data.fromJson(Map<dynamic, dynamic> json) => Data(
-        accessToken: json["access_token"],
-        userDetails: UserDetails.fromJson(json["user_details"]),
+    factory Data.fromJson(Map<String, dynamic> json) => Data(
+        accessToken: json["access_token"] ?? "",
+        userDetails: json["user_details"] != null
+            ? UserDetails.fromJson(json["user_details"])
+            : UserDetails.empty(),
     );
 
-    Map<dynamic, dynamic> toJson() => {
+    Map<String, dynamic> toJson() => {
         "access_token": accessToken,
         "user_details": userDetails.toJson(),
     };
@@ -79,20 +82,34 @@ class UserDetails {
     int sellerId;
     String email;
 
-    factory UserDetails.fromJson(Map<dynamic, dynamic> json) => UserDetails(
-        fname: json["fname"],
-        businessName: json["business_name"],
-        profileImg: json["profile_img"],
-        lname: json["lname"],
-        phone: json["phone"],
-        joined: json["joined"],
-        joinedAgo: json["joined_ago"],
-        storeName: json["store_name"],
-        sellerId: json["seller_id"],
-        email: json["email"],
+    /// Factory constructor for empty UserDetails to handle null scenarios
+    factory UserDetails.empty() => UserDetails(
+        fname: "",
+        businessName: "",
+        profileImg: "",
+        lname: "",
+        phone: "",
+        joined: "",
+        joinedAgo: "",
+        storeName: "",
+        sellerId: 0,
+        email: "",
     );
 
-    Map<dynamic, dynamic> toJson() => {
+    factory UserDetails.fromJson(Map<String, dynamic> json) => UserDetails(
+        fname: json["fname"] ?? "",
+        businessName: json["business_name"] ?? "",
+        profileImg: json["profile_img"] ?? "",
+        lname: json["lname"] ?? "",
+        phone: json["phone"] ?? "",
+        joined: json["joined"] ?? "",
+        joinedAgo: json["joined_ago"] ?? "",
+        storeName: json["store_name"] ?? "",
+        sellerId: json["seller_id"] ?? 0,
+        email: json["email"] ?? "",
+    );
+
+    Map<String, dynamic> toJson() => {
         "fname": fname,
         "business_name": businessName,
         "profile_img": profileImg,
