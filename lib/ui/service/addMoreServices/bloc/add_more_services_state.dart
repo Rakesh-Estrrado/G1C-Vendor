@@ -21,7 +21,7 @@ class AddMoreServicesState extends Equatable {
       this.isUpdated = true,
       this.desc = "",
       this.totalHours = "",
-      this.price = "",
+      this.price = "0",
       this.disPrice = "",
       this.startDate = "",
       this.endDate = "",

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:g1c_vendor/utils/utils.dart';
-import 'package:sizer/sizer.dart';
 
 class CustomCheckbox extends StatelessWidget {
   final bool isChecked;

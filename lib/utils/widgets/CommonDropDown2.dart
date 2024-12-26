@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:g1c_vendor/utils/colors.dart';
-import 'package:sizer/sizer.dart';
-
 import '../utils.dart';
-
-import 'package:flutter/material.dart';
 
   class CommonDropDown2 extends StatelessWidget {
     final String labelText;

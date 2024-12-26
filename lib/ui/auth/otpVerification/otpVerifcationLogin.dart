@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:g1c_vendor/ui/auth/login/bloc/login_bloc.dart';
-import 'package:g1c_vendor/ui/auth/register/bloc/register_bloc.dart';
 import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:g1c_vendor/utils/colors.dart';
-import 'package:g1c_vendor/utils/utils.dart';
-import 'package:sizer/sizer.dart';
 
 class RoundAddButton extends StatefulWidget {
   final VoidCallback onTap;

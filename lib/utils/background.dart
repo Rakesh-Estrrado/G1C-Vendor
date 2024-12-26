@@ -5,12 +5,14 @@ import 'package:sizer/sizer.dart';
 class Background extends StatelessWidget {
   final Widget child;
   final bool isAuth;
+  final bool resize;
 
-  const Background({super.key, required this.child, this.isAuth = false});
+  const Background({super.key, required this.child, this.isAuth = false, this.resize = true});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: resize,
       body: Stack(
         children: [
           Positioned(
@@ -22,7 +24,7 @@ class Background extends StatelessWidget {
                 isAuth?background:background2,
                 fit: BoxFit.cover,
               )),
-          SafeArea(child: child)
+          SafeArea(child: SizedBox(height: 100.h,width: 100.w,child: child))
         ],
       ),
     );

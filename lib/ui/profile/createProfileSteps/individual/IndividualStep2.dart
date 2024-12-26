@@ -59,7 +59,7 @@ class IndividualStep2 extends StatelessWidget {
                             context: context,
                             initialDate: dobController!.text.isEmpty
                                 ? DateTime(1995)
-                                : DateTime.tryParse(dobController!.text),
+                                : DateTime.tryParse(dobController.text),
                             firstDate: DateTime(1900),
                             lastDate: DateTime.now())
                         .then((pickedDate) {

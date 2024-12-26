@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:g1c_vendor/ui/dashBoard/dashboard_screen.dart';
-import 'package:g1c_vendor/ui/service/addMoreServices/AddMoreServices.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/image_constant.dart';

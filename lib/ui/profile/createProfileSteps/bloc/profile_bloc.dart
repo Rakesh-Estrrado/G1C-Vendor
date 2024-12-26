@@ -1,6 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
@@ -124,7 +122,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             state.bankNameController!.text,
             state.bankAccNoController!.text,
             state.bankAccNameController!.text,
-            state.selectedGender ?? "",
+            state.selectedGender,
             state.dobController!.text,
             state.titleController!.text,
             state.companyController!.text,
@@ -539,13 +537,10 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           LocationSettings(accuracy: LocationAccuracy.high, distanceFilter: 100);
 
       try {
-        final Position position = await Geolocator.getCurrentPosition(
-          locationSettings: locationSettings,
-        );
+      final Position position = await Geolocator.getCurrentPosition(locationSettings: locationSettings);
       var currentPosition = position;
       var placeMark = await getAddressFromLatLng(position);
-      var currentAddress =
-          "${placeMark?.street}, ${placeMark?.subLocality}, ${placeMark?.subAdministrativeArea}, ${placeMark?.postalCode}";
+      var currentAddress = "${placeMark?.street}, ${placeMark?.subLocality}, ${placeMark?.subAdministrativeArea}, ${placeMark?.postalCode}";
       var country = placeMark?.country ?? "Unknown";
       add(AddAddressFromLocation(
         address: currentAddress,

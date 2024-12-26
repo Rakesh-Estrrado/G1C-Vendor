@@ -7,6 +7,8 @@ import 'package:g1c_vendor/utils/image_constant.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import 'package:sizer/sizer.dart';
 
+import '../../dashBoard/dashboard_screen.dart';
+
 class ServiceCompleted extends StatelessWidget {
   const ServiceCompleted({super.key});
 
@@ -32,9 +34,10 @@ class ServiceCompleted extends StatelessWidget {
                       textStyleSmall.copyWith(color: white.withOpacity(0.5))),
               const SizedBox(height: 36),
               InkWell(
-                onTap: (){
-                  navigateTo(context: context, destination: AssignedWorkers());
-                },
+                onTap: ()=> Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (context) => DashboardScreen()),
+                        (route) => false),
                 child: gradientContainer(
                   height: 45,
                     borderRadius: 12,

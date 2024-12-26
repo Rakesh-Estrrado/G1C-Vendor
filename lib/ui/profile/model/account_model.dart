@@ -45,20 +45,20 @@ class Data {
     BasicDetails basicDetails;
     BusinessDetails businessDetails;
     BankDetails bankDetails;
-    List<dynamic> individualDetails;
+    IndividualDetails individualDetails;
 
     factory Data.fromJson(Map<dynamic, dynamic> json) => Data(
         basicDetails: BasicDetails.fromJson(json["basic_details"]),
         businessDetails: BusinessDetails.fromJson(json["business_details"]),
         bankDetails: BankDetails.fromJson(json["bank_details"]),
-        individualDetails: List<dynamic>.from(json["individual_details"].map((x) => x)),
+             individualDetails: IndividualDetails.fromJson(json["individual_details"]),
     );
 
     Map<dynamic, dynamic> toJson() => {
         "basic_details": basicDetails.toJson(),
         "business_details": businessDetails.toJson(),
         "bank_details": bankDetails.toJson(),
-        "individual_details": List<dynamic>.from(individualDetails.map((x) => x)),
+        "individual_details": individualDetails.toJson(),
     };
 }
 
@@ -142,6 +142,75 @@ class BasicDetails {
     };
 }
 
+class IndividualDetails {
+    IndividualDetails({
+        required this.education,
+        required this.drinking,
+        required this.dob,
+        required this.gender,
+        required this.languages,
+        required this.university,
+        required this.weight,
+        required this.individualName,
+        required this.religion,
+        required this.hobbies,
+        required this.smoking,
+        required this.company,
+        required this.jobTitle,
+        required this.height,
+    });
+
+    String education;
+    int drinking;
+    String gender;
+    String dob;
+    List<String> languages;
+    String university;
+    int weight;
+    String individualName;
+    int religion;
+    String hobbies;
+    int smoking;
+    String company;
+    String jobTitle;
+    int height;
+
+    factory IndividualDetails.fromJson(Map<dynamic, dynamic> json) => IndividualDetails(
+        education: json["education"]??"",
+        drinking: json["drinking"]??0,
+        gender: json["gender"]??"",
+        dob: json["dob"]??"",
+        languages: json["languages"]==null?[]:List<String>.from(json["languages"].map((x) => x)),
+        university: json["university"]??"",
+        weight: json["weight"]??0,
+        individualName: json["individual_name"]??"",
+        religion: json["religion"]??0,
+        hobbies:json["hobbies"]??"",
+        smoking: json["smoking"]??0,
+        company: json["company"]??"",
+        jobTitle: json["job_title"]??"",
+        height: json["height"]??0,
+    );
+
+    Map<dynamic, dynamic> toJson() => {
+        "education": education,
+        "drinking": drinking,
+        "gender": gender,
+        "languages": List<dynamic>.from(languages.map((x) => x)),
+        "university": university,
+        "weight": weight,
+        "individual_name": individualName,
+        "religion": religion,
+        "hobbies": hobbies,
+        "smoking": smoking,
+        "company": company,
+        "job_title": jobTitle,
+        "height": height,
+        "dob": dob,
+    };
+}
+
+
 class BusinessDetails {
     BusinessDetails({
         required this.businessName,
@@ -164,14 +233,14 @@ class BusinessDetails {
     List<BusinessDocument> businessDocuments;
 
     factory BusinessDetails.fromJson(Map<dynamic, dynamic> json) => BusinessDetails(
-        businessName: json["business_name"],
-        address: json["address"],
-        categoryId: json["category_id"],
-        registrationNumber: json["registration_number"],
-        logo: json["logo"],
-        landmark: json["landmark"],
-        building: json["building"],
-        businessDocuments: List<BusinessDocument>.from(json["business_documents"].map((x) => BusinessDocument.fromJson(x))),
+        businessName: json["business_name"]??"",
+        address: json["address"]??"",
+        categoryId: json["category_id"]??0,
+        registrationNumber: json["registration_number"]??"",
+        logo: json["logo"]??"",
+        landmark: json["landmark"]??"",
+        building: json["building"]??"",
+        businessDocuments: json["business_documents"]!=null?List<BusinessDocument>.from(json["business_documents"].map((x) => BusinessDocument.fromJson(x))):[],
     );
 
     Map<dynamic, dynamic> toJson() => {
@@ -186,6 +255,7 @@ class BusinessDetails {
     };
 }
 
+
 class BusinessDocument {
     BusinessDocument({
         required this.file,
@@ -196,8 +266,8 @@ class BusinessDocument {
     int id;
 
     factory BusinessDocument.fromJson(Map<dynamic, dynamic> json) => BusinessDocument(
-        file: json["file"],
-        id: json["id"],
+        file: json["file"]??"",
+        id: json["id"]??0,
     );
 
     Map<dynamic, dynamic> toJson() => {

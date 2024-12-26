@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 import 'package:g1c_vendor/ui/auth/register/bloc/register_bloc.dart';
 import 'package:g1c_vendor/utils/background.dart';
-import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
 
 class TermsAndConditions extends StatelessWidget {

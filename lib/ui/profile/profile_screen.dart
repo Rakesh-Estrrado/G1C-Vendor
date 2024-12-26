@@ -82,7 +82,7 @@ class ProfileScreen extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text("${state.basicDetails?.fname??""} ${state.basicDetails?.lname??""}", style: textStyleBoldLarge,maxLines: 2),
-                                  Text("${state.businessDetails?.businessName??""}",
+                                  Text("${state.basicDetails?.providerType=="individual"?state.basicDetails?.email:state.businessDetails?.businessName}",
                                       style: textStyleRegular.copyWith(
                                           color: white.withOpacity(0.5))),
                                 ],

@@ -28,6 +28,7 @@ class BusinessStep3 extends StatelessWidget {
             return CommonTextField(
                 labelText: "Bank Name",
                 hintText: "Bank Name",
+                isRequired: true,
                 controller: bankNameController,
                 onChanged: (val) {});
           },
@@ -39,6 +40,7 @@ class BusinessStep3 extends StatelessWidget {
             return CommonTextField(
                 labelText: "Bank Account Number",
                 hintText: "Bank Account Number",
+                isRequired: true,
                 controller: bankAccNoController,
                 onChanged: (val) {});
           },
@@ -50,6 +52,7 @@ class BusinessStep3 extends StatelessWidget {
             return CommonTextField(
                 labelText: "Bank Account Name",
                 hintText: "Bank Account Name",
+                isRequired: true,
                 controller: bankAccNameController,
                 onChanged: (val) {});
           },

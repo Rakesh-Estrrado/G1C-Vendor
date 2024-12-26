@@ -6,10 +6,7 @@ import 'package:g1c_vendor/ui/home/home_screen.dart';
 import 'package:g1c_vendor/ui/profile/profile_screen.dart';
 import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/ui/widgets/custom_bottom_bar.dart';
-
-import '../../di/AppLocator.dart';
 import '../../utils/colors.dart';
-import '../../utils/sessionManager.dart';
 import '../../utils/utils.dart';
 import '../../utils/widgets/CommonButton.dart';
 
@@ -30,14 +27,6 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final sessionManager = AppLocator.instance<SessionManager>();
-    Future.delayed(Duration(seconds: 1),(){
-      if (!sessionManager.isAppBetaMessageShown) {
-        sessionManager.isAppBetaMessageShown = true;
-        showBetaMessage(context);
-      }
-    });
-
     return Scaffold(
       body: PageView(
         controller: pageController,

@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:g1c_vendor/ui/companyDetails/bloc/company_details_bloc.dart';
 import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/image_constant.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/CommonButton.dart';
-import 'package:g1c_vendor/utils/widgets/CommonDropDown.dart';
 import 'package:g1c_vendor/utils/widgets/CommonTextField.dart';
 import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
 

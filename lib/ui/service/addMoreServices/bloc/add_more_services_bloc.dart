@@ -8,10 +8,8 @@ import 'package:g1c_vendor/data/model/success_model.dart';
 import 'package:g1c_vendor/data/repository/Repository.dart';
 import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
 import 'package:g1c_vendor/ui/service/serviceDetails/model/service_details_model.dart';
-import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/loader.dart';
 import 'package:g1c_vendor/utils/utils.dart';
-
 import '../../../commonVerification/CommonVerificationProgress.dart';
 import '../../addService/model/add_on_list_model.dart';
 

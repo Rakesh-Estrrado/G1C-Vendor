@@ -10,17 +10,30 @@ import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:sizer/sizer.dart';
-import 'package:flutter/services.dart';
 import 'package:path/path.dart' as path;
 
 import '../ui/profile/createProfileSteps/bloc/profile_bloc.dart';
 import '../ui/widgets/custom_image_view.dart';
 import 'image_constant.dart';
 
-void navigateTo({required BuildContext context, required Widget destination}) {
+/*void navigateTo({required BuildContext context, required Widget destination}) {
   HapticFeedback.selectionClick();
   Navigator.of(context)
       .push(MaterialPageRoute(builder: (context) => destination));
+}*/
+
+void navigateTo(
+    {required BuildContext context,
+      required Widget destination,
+      Function(String)? updated}) {
+  Navigator.push(context, MaterialPageRoute(builder: (context) => destination))
+      .then((result) {
+    if (result != null) {
+      if (updated != null) {
+        updated(result);
+      }
+    }
+  });
 }
 
 void showSnackBar(
@@ -421,6 +434,19 @@ extension DateFormatExtension on String {
       return '';
     }
   }
+  String toDMMMY() {
+    try {
+      if (this.isNotEmpty || this != "null" || this != null) {
+        DateTime dateTime = DateTime.parse(this);
+        final formatter = DateFormat('dd MMM yyyy');
+        return formatter.format(dateTime);
+      } else {
+        return "";
+      }
+    } catch (e) {
+      return '';
+    }
+  }
   String toYMD() {
     try {
       if (this.isNotEmpty || this != "null" || this != null) {
@@ -459,7 +485,7 @@ Future<Map<String, String>> getDeviceDetails() async {
     // For Android
     final androidInfo = await deviceInfo.androidInfo;
     deviceId = androidInfo.id;
-    deviceName = androidInfo.device??"Unknown";
+    deviceName = androidInfo.device;
   } else if (Theme.of(context).platform == TargetPlatform.iOS) {
     // For iOS
     final iosInfo = await deviceInfo.iosInfo;
@@ -504,3 +530,52 @@ void showDatePickerDialog(
   });
 }
 
+
+
+TimeOfDay parseTimeOfDay(String time) {
+  final parsedTime = DateFormat("HH:mm").parse(time); // Parses "20:40"
+  return TimeOfDay(hour: parsedTime.hour, minute: parsedTime.minute);
+}
+
+
+String calculateTimeDifference(String startTime, String endTime,{Function(int)? totalMinutes}) {
+  try {
+    TimeOfDay start = parseTimeOfDay(startTime.to24HourFormat());
+    TimeOfDay end = parseTimeOfDay(endTime.to24HourFormat());
+
+    // Convert TimeOfDay to total minutes since midnight
+    int startMinutes = start.hour * 60 + start.minute;
+    int endMinutes = end.hour * 60 + end.minute;
+
+    // Calculate the difference in minutes
+    int differenceInMinutes = endMinutes - startMinutes;
+    if(totalMinutes!=null){
+      totalMinutes(differenceInMinutes);
+    }
+    if (differenceInMinutes < 0) {
+      return "";
+    }
+
+    // Convert minutes to hours and minutes
+    int hours = differenceInMinutes ~/ 60;
+    int minutes = differenceInMinutes % 60;
+
+    return "${hours} hrs ${minutes.toString().padLeft(2, '0')} min's";
+  } catch (e) {
+    return "";
+  }
+}
+
+String formatTime(int totalMinutes) {
+  int hours = totalMinutes ~/ 60;
+  int minutes = totalMinutes % 60;
+  int seconds = 0; // Assuming no seconds since input is in minutes
+  return "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}";
+}
+
+/*
+String formatTime(int totalSeconds) {
+  int minutes = totalSeconds ~/ 60; // Get the number of whole minutes
+  int seconds = totalSeconds % 60;  // Get the remaining seconds
+  return '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}';
+}*/

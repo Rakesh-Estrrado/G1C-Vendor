@@ -7,8 +7,6 @@ import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/sessionManager.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
-import 'package:sizer/sizer.dart';
-
 import '../../utils/image_constant.dart';
 import '../../utils/widgets/ActionButtonsRow.dart';
 import '../../utils/widgets/CommonTextField.dart';
@@ -241,7 +239,6 @@ class _ScheduleState extends State<Schedule> {
   }
 
   void showAddSchedule(BuildContext buildContext, String day, int index) {
-    ValueNotifier<String> time = ValueNotifier("Multiple");
     final startTime = TextEditingController();
     final endTime = TextEditingController();
     var maxBookingsController = TextEditingController();

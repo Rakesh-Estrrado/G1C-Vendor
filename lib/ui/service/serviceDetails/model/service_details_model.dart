@@ -171,7 +171,7 @@ class ServiceData {
         servicePrice: json["service_price"],
         serviceTotalHours: json["service_total_hours"],
         serviceName: json["service_name"],
-        serviceDiscountPrice: json["service_discount_price"],
+        serviceDiscountPrice: json["service_discount_price"]??0,
         serviceCategory: json["service_category"],
         categoryId: json["category_id"],
         subCategoryId: json["subcategory_id"],

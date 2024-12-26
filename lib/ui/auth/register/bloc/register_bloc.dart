@@ -4,13 +4,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:g1c_vendor/ui/auth/model/terms_and_conditions_model.dart';
 import 'package:g1c_vendor/ui/auth/otpVerification/otpVerifcation.dart';
-
 import '../../../../data/repository/Repository.dart';
-import '../../../../di/AppLocator.dart';
 import '../../../../utils/loader.dart';
-import '../../../../utils/sessionManager.dart';
 import '../../../../utils/utils.dart';
-import '../../../dashBoard/dashboard_screen.dart';
 import '../../../profile/createProfile.dart';
 import '../../model/register_model.dart';
 

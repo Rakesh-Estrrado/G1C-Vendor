@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:g1c_vendor/di/AppLocator.dart';
 import 'package:g1c_vendor/ui/auth/login/model/login_model.dart';
 import 'package:g1c_vendor/ui/auth/model/CountryCodeModel.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/model/booking_detail_model.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/model/booking_list_model.dart';
 import 'package:g1c_vendor/ui/service/addService/bloc/add_service_bloc.dart';
 import 'package:g1c_vendor/ui/service/addService/model/add_on_list_model.dart';
 import 'package:g1c_vendor/ui/service/addService/model/categories_model.dart';
@@ -195,7 +197,6 @@ class ApiService {
   Future<LoginOtpModel> verifyOTPLogin(
       String phoneNumber, String countryCode, String otp) async {
     try {
-
       var deviceInfo = await getDeviceDetails();
       final response = await dio.post("$baseUrl/seller/confirm-otp",
           data: {
@@ -599,8 +600,7 @@ class ApiService {
       String endDate,
       List<AddServiceAddOns> addOnList) async {
     try {
-      FormData data = FormData.fromMap(
-      {
+      FormData data = FormData.fromMap({
         "access_token": sessionManager.token,
         "category_id": catId,
         "subcategory_id": subCatId,
@@ -612,18 +612,19 @@ class ApiService {
         "discount_start_date": startDate,
         "discount_end_date": endDate,
         "save_as_draft": 1,
-
         ...addOnList
             .asMap()
             .map((i, addon) => MapEntry("addons[$i][addon_id]", addon.id))
           ..addAll(addOnList
               .asMap()
               .map((i, addon) => MapEntry("addons[$i][time]", addon.time.text)))
-          ..addAll(addOnList
-              .asMap()
-              .map((i, addon) => MapEntry("addons[$i][price]", addon.price.text))),
+          ..addAll(addOnList.asMap().map(
+              (i, addon) => MapEntry("addons[$i][price]", addon.price.text))),
       });
 
+      data.fields.forEach((field) {
+        print("${field.key}: ${field.value}");
+      });
 
       final response =
           await dio.post("$baseUrl/seller/add-service-basic-details",
@@ -906,6 +907,7 @@ class ApiService {
       });
       return AccountModel.fromJson(response.data);
     } catch (error) {
+      print("error: $error");
       throw Exception('Failed  $error');
     }
   }
@@ -989,4 +991,67 @@ class ApiService {
       throw Exception('Failed  $error');
     }
   }
+
+  Future<BookingListModel> getBookingList(String type, int pageNo) async {
+    try {
+      final response = await dio.post("$baseUrl/seller/bookings-list",
+          data: FormData.fromMap({
+            "access_token": sessionManager.token,
+            "list_type": type,
+            "limit": 10,
+            "page": pageNo
+          }));
+      return BookingListModel.fromJson(response.data);
+    } catch (error) {
+      print("$error");
+      throw Exception('Failed $error');
+    }
+  }
+
+  Future<BookingDetailModel> getBookingDetails(
+      String type, int bookingId) async {
+    try {
+      final response = await dio.post("$baseUrl/seller/bookings-detail",
+          data: FormData.fromMap({
+            "access_token": sessionManager.token,
+            "list_type": type,
+            "booking_id": bookingId
+          }));
+      return BookingDetailModel.fromJson(response.data);
+    } catch (error) {
+      throw Exception('Failed  $error');
+    }
+  }
+
+  Future<SuccessModel> acceptRejectRequest(String action, int bookingId) async {
+    try {
+      final response = await dio.post("$baseUrl/seller/bookings-action",
+          data: FormData.fromMap({
+            "access_token": sessionManager.token,
+            "booking_id": bookingId,
+            "action": action,
+            "remarks": "",
+          }));
+      return SuccessModel.fromJson(response.data);
+    } catch (error) {
+      throw Exception('Failed  $error');
+    }
+  }
+
+  Future<SuccessModel> completeBooking(int bookingId, int rating, String review) async {
+    try {
+      final response = await dio.post("$baseUrl/seller/complete-service",
+          data: FormData.fromMap({
+            "access_token": sessionManager.token,
+            "booking_id": bookingId,
+            "rating": rating,
+            "review": review,
+          }));
+      return SuccessModel.fromJson(response.data);
+    } catch (error) {
+      throw Exception('Failed  $error');
+    }
+  }
+
+
 }

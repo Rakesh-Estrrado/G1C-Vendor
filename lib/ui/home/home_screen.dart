@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:g1c_vendor/di/AppLocator.dart';
 import 'package:g1c_vendor/ui/home/bloc/home_bloc.dart';
 import 'package:g1c_vendor/ui/home/details/revenueGraph/RevenueGraphDetails.dart';
 import 'package:g1c_vendor/ui/home/details/summary/Summary.dart';
@@ -8,14 +7,10 @@ import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/image_constant.dart';
-import 'package:g1c_vendor/utils/sessionManager.dart';
 import 'package:g1c_vendor/utils/utils.dart';
-import 'package:g1c_vendor/utils/widgets/CommonButton.dart';
 import 'package:g1c_vendor/utils/widgets/appBar.dart';
 import 'package:sizer/sizer.dart';
 import 'package:fl_chart/fl_chart.dart';
-
-import '../../utils/widgets/ActionButtonsRow.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

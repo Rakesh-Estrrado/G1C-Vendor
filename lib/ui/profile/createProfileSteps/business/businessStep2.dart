@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -99,57 +98,5 @@ class BusinessStep2 extends StatelessWidget {
             onSubmit: () => context.read<ProfileBloc>()..validateAndMove())
       ]),
     ));
-  }
-
-  Widget uploadImage(String label, File? selectedFile, String type,
-      {bool isRequired = false}) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text('$label${isRequired ? ' *' : ''}', style: textStyleRegular),
-        SizedBox(height: 8.0),
-        Container(
-          height: 100,
-          width: 100.w,
-          decoration: semiCircleBoxWithBorder(color: darkBlue),
-          child: Stack(
-            children: [
-              selectedFile == null
-                  ? InkWell(
-                      onTap: () => showImagePicker(type),
-                      child: Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            CustomImageView(
-                                imagePath: icUploadImage,
-                                height: 22,
-                                width: 22),
-                            SizedBox(width: 8),
-                            Text("Upload Image",
-                                style: textStyleRegular.copyWith(
-                                    color: white.withOpacity(0.6)))
-                          ],
-                        ),
-                      ))
-                  : Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Image.file(selectedFile),
-                      ),
-                    ),
-              if (selectedFile != null)
-                Positioned(
-                  top: 5,
-                  right: 15,
-                  child: InkWell(
-                      onTap: () => selectedFile = null,
-                      child: CustomImageView(imagePath: icDelete)),
-                ),
-            ],
-          ),
-        )
-      ],
-    );
   }
 }

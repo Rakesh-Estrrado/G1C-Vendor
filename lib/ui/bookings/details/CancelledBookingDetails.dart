@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:g1c_vendor/main.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/bookings_bloc.dart';
 import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
@@ -9,10 +12,13 @@ import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
 import 'package:sizer/sizer.dart';
 
 class CancelledBookingDetails extends StatelessWidget {
-  const CancelledBookingDetails({super.key});
+  final int bookingId;
+
+  const CancelledBookingDetails({super.key, required this.bookingId});
 
   @override
   Widget build(BuildContext context) {
+    context.read<BookingsBloc>().getBookingDetails("cancelled", bookingId);
     return Background(
       child: Padding(
         padding: EdgeInsets.all(16.0),
@@ -22,247 +28,257 @@ class CancelledBookingDetails extends StatelessWidget {
             SizedBox(height: 20),
             Expanded(
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: semiCircleBox(color: darkBlue200, radius: 10),
-                      child: Column(
-                        children: [
-                          Row(
+                child: BlocBuilder<BookingsBloc, BookingsState>(
+                  builder: (context, state) {
+                    if (state.allBookingDetails == null) return SizedBox();
+                    var booking = state.allBookingDetails;
+                    return Column(
+                      children: [
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration:
+                              semiCircleBox(color: darkBlue200, radius: 10),
+                          child: Column(
                             children: [
-                              CustomImageView(
-                                imagePath: dummyImage,
-                                width: 45,
-                                height: 45,
-                                radius: const BorderRadius.all(
-                                    Radius.circular(100.0)),
-                              ),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
+                              Row(
                                 children: [
-                                  Text("Clubbing Partner",
-                                      style: textStyleRegularMedium),
-                                  Container(
-                                    decoration: BoxDecoration(
-                                      color: cardRed,
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(4.0)),
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 12.0, vertical: 2.0),
-                                    child: Text("00:14:59",
-                                        style: textStyleRegular.copyWith(
-                                            color: red, fontSize: 14.sp)),
+                                  CustomImageView(
+                                    imagePath: booking?.bookingsDetail.image,
+                                    width: 45,
+                                    height: 45,
+                                    fit: BoxFit.cover,
+                                    radius: const BorderRadius.all(
+                                        Radius.circular(100.0)),
                                   ),
-                                ],
-                              ),
-                              const Spacer(),
-                              gradientContainer(
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 12.0),
-                                  child: Center(
-                                    child: Text("RM 60/3 hrs",
-                                        style: textStyleSemiBold.copyWith(
-                                            color: white, fontSize: 14.sp)),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          Divider(color: black, height: 24),
-                          Row(
-                            children: [
-                              Text("Status",style: textStyleSemiBold),
-                              Spacer(),
-                              Container(
-                                decoration: semiCircleBox(color: cardRed, radius: 4.0),
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 8.0,vertical: 4.0),
-                                  child: Text("Declined",
-                                      style: textStyleSmall.copyWith(
-                                          color: red)),
-                                ),
-                              )
-
-                            ],
-                          ),
-
-                          Row(
-                            children: [
-                              CustomImageView(imagePath: icCalendar),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("10.00am,  09 Sep 2024, 4 hrs",
-                                      style: textStyleSemiBold.copyWith(
-                                          color: white)),
-                                  Text("Schedule",
-                                      style: textStyleSmall.copyWith(
-                                          color: white.withOpacity(0.5))),
-                                ],
-                              )
-                            ],
-                          ),
-                          SizedBox(height: 20),
-                          Row(
-                            children: [
-                              CustomImageView(imagePath: icLocation),
-                              const SizedBox(width: 10),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text("Pitt Club KL",
-                                      style: textStyleSemiBold.copyWith(
-                                          color: white)),
-                                  Text("Venue",
-                                      style: textStyleSmall.copyWith(
-                                          color: white.withOpacity(0.5))),
-                                ],
-                              ),
-                              const Spacer(),
-                              CustomImageView(imagePath: icNavigation),
-                            ],
-                          ),
-                          SizedBox(height: 10),
-                          ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: 1,
-                              itemBuilder: (context, i) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 8.0),
-                                  child: Row(
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     children: [
-                                      CustomImageView(
-                                        imagePath: dummyImage,
-                                        width: 40,
-                                        height: 40,
-                                        radius: const BorderRadius.all(
-                                            Radius.circular(100.0)),
+                                      Text("${booking?.bookingsDetail.serviceName}",
+                                          style: textStyleRegularMedium),
+                                      Text("${booking?.bookingsDetail.orderId}",
+                                          style: textStyleRegular.copyWith(
+                                              color: white.withOpacity(0.7))),
+                                    ],
+                                  ),
+                                  const Spacer(),
+                                  gradientContainer(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 12.0),
+                                      child: Center(
+                                        child: Text("RM ${booking?.bookingsDetail.price.toStringAsFixed(2)}",
+                                            style: textStyleSemiBold.copyWith(
+                                                color: white, fontSize: 14.sp)),
                                       ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              Divider(color: black, height: 24),
+                              Row(
+                                children: [
+                                  Text("Status", style: textStyleSemiBold),
+                                  Spacer(),
+                                  Container(
+                                    decoration: semiCircleBox(
+                                        color: cardRed, radius: 4.0),
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 8.0, vertical: 4.0),
+                                      child: Text("Declined",
+                                          style: textStyleSmall.copyWith(
+                                              color: red)),
+                                    ),
+                                  )
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  CustomImageView(imagePath: icCalendar),
+                                  const SizedBox(width: 10),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text("${booking?.bookingsDetail.startTime.to12HourFormat()}, ${booking?.bookingsDetail.date.toDMMMY()}, ${booking?.bookingsDetail.duration}",
+                                          style: textStyleSemiBold.copyWith(
+                                              color: white)),
+                                      Text("Schedule",
+                                          style: textStyleSmall.copyWith(
+                                              color: white.withOpacity(0.5))),
+                                    ],
+                                  )
+                                ],
+                              ),
+                              SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  CustomImageView(imagePath: icLocation),
+                                  const SizedBox(width: 10),
+                                  Expanded(
+                                    flex: 9,
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text("${booking?.bookingsDetail.venue}",
+                                            style: textStyleSemiBold.copyWith(
+                                                color: white)),
+                                        Text("Venue",
+                                            style: textStyleSmall.copyWith(
+                                                color: white.withOpacity(0.5))),
+                                      ],
+                                    ),
+                                  ),
+                                  const Spacer(),
+                                  CustomImageView(imagePath: icNavigation),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: 1,
+                                  itemBuilder: (context, i) {
+                                    return Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Row(
                                         children: [
-                                          Text("John Doe",
-                                              style: textStyleRegularMedium),
-                                         Text("Male, 24",
+                                          CustomImageView(
+                                            imagePath: booking?.customerDetail.profileImage,
+                                            width: 40,
+                                            height: 40,
+                                            fit: BoxFit.cover,
+                                            radius: const BorderRadius.all(
+                                                Radius.circular(100.0)),
+                                          ),
+                                          const SizedBox(width: 10),
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text("${booking?.customerDetail.name}",
+                                                  style:
+                                                      textStyleRegularMedium),
+                                              Text("${booking?.customerDetail.gender}, ${booking?.customerDetail.age}",
                                                   style:
                                                       textStyleRegular.copyWith(
                                                           color:
                                                               white.withOpacity(
                                                                   0.5))),
+                                            ],
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                );
-                              }),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: semiCircleBox(color: darkBlue200, radius: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Customer Preference", style: textStyleRegular),
-                          SizedBox(height: 10),
-                          Text("Dance club", style: textStyleRegularMedium),
-                          Text("Clubbing Experience",
-                              style: textStyleRegular.copyWith(
-                                  color: white.withOpacity(0.5))),
-                          SizedBox(height: 10),
-                          Text("EDM, Hip-hop, Pop",
-                              style: textStyleRegularMedium),
-                          Text("Music Genres",
-                              style: textStyleRegular.copyWith(
-                                  color: white.withOpacity(0.5))),
-                          SizedBox(height: 10),
-                          Text("Casual Dress", style: textStyleRegularMedium),
-                          Text("Dress Code",
-                              style: textStyleRegular.copyWith(
-                                  color: white.withOpacity(0.5))),
-                          SizedBox(height: 10),
-                          Text("Whisky, Beer, Cocktails",
-                              style: textStyleRegularMedium),
-                          Text("Preferred Drinks",
-                              style: textStyleRegular.copyWith(
-                                  color: white.withOpacity(0.5))),
-                          SizedBox(height: 10),
-                          Text("Halal", style: textStyleRegularMedium),
-                          Text("Dietary Preferences",
-                              style: textStyleRegular.copyWith(
-                                  color: white.withOpacity(0.5))),
-                          SizedBox(width: 100.w)
-                        ],
-                      ),
-                    ),
-
-                    SizedBox(height: 20),
-                    Container(
-                      padding: EdgeInsets.all(16),
-                      decoration: semiCircleBox(color: darkBlue200, radius: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text("Bill Summary", style: textStyleSemiBoldMedium),
-                          Container(
-                              height: 1,
-                              color: black,
-                              margin: EdgeInsets.symmetric(vertical: 10)),
-                          Row(
-                            children: [
-                              Text(
-                                "SubTotal",
-                                style: textStyleRegularMedium,
-                              ),
-                              Spacer(),
-                              Text(
-                                "RM 60.00",
-                                style: textStyleRegularMedium,
-                              ),
+                                    );
+                                  }),
                             ],
                           ),
-                          SizedBox(height: 10),
-                          Row(
+                        ),
+                        SizedBox(height: 20),
+                        /*Container(
+                          padding: EdgeInsets.all(16),
+                          decoration:
+                              semiCircleBox(color: darkBlue200, radius: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                "Discount",
-                                style: textStyleRegularMedium,
-                              ),
-                              Spacer(),
-                              Text(
-                                "- RM 20.00",
-                                style: textStyleRegularMedium,
-                              ),
+                              Text("Customer Preference",
+                                  style: textStyleRegular),
+                              SizedBox(height: 10),
+                              Text("Dance club", style: textStyleRegularMedium),
+                              Text("Clubbing Experience",
+                                  style: textStyleRegular.copyWith(
+                                      color: white.withOpacity(0.5))),
+                              SizedBox(height: 10),
+                              Text("EDM, Hip-hop, Pop",
+                                  style: textStyleRegularMedium),
+                              Text("Music Genres",
+                                  style: textStyleRegular.copyWith(
+                                      color: white.withOpacity(0.5))),
+                              SizedBox(height: 10),
+                              Text("Casual Dress",
+                                  style: textStyleRegularMedium),
+                              Text("Dress Code",
+                                  style: textStyleRegular.copyWith(
+                                      color: white.withOpacity(0.5))),
+                              SizedBox(height: 10),
+                              Text("Whisky, Beer, Cocktails",
+                                  style: textStyleRegularMedium),
+                              Text("Preferred Drinks",
+                                  style: textStyleRegular.copyWith(
+                                      color: white.withOpacity(0.5))),
+                              SizedBox(height: 10),
+                              Text("Halal", style: textStyleRegularMedium),
+                              Text("Dietary Preferences",
+                                  style: textStyleRegular.copyWith(
+                                      color: white.withOpacity(0.5))),
+                              SizedBox(width: 100.w)
                             ],
                           ),
-                          Container(
-                              height: 1,
-                              color: black,
-                              margin: EdgeInsets.symmetric(vertical: 10)),
-                          Row(
+                        ),
+                        SizedBox(height: 20),*/
+                        Container(
+                          padding: EdgeInsets.all(16),
+                          decoration:
+                              semiCircleBox(color: darkBlue200, radius: 10),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Total", style: textStyleSemiBoldMedium),
-                              Spacer(),
-                              Text("- RM 20.00",
+                              Text("Bill Summary",
                                   style: textStyleSemiBoldMedium),
+                              Container(
+                                  height: 1,
+                                  color: black,
+                                  margin: EdgeInsets.symmetric(vertical: 10)),
+                              Row(
+                                children: [
+                                  Text(
+                                    "SubTotal",
+                                    style: textStyleRegularMedium,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    "RM ${booking?.billingSummary.subtotal.round().toStringAsFixed(2)}",
+                                    style: textStyleRegularMedium,
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 10),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Discount",
+                                    style: textStyleRegularMedium,
+                                  ),
+                                  Spacer(),
+                                  Text(
+                                    "- RM 0.00",
+                                    style: textStyleRegularMedium,
+                                  ),
+                                ],
+                              ),
+                              Container(
+                                  height: 1,
+                                  color: black,
+                                  margin: EdgeInsets.symmetric(vertical: 10)),
+                              Row(
+                                children: [
+                                  Text("Total", style: textStyleSemiBoldMedium),
+                                  Spacer(),
+                                  Text("RM ${booking?.billingSummary.total.round().toStringAsFixed(2)}",
+                                      style: textStyleSemiBoldMedium),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox( height: 20),
-
-                  ],
+                        ),
+                        SizedBox(height: 20),
+                      ],
+                    );
+                  },
                 ),
               ),
             ),

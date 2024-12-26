@@ -68,65 +68,102 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-      return  
-
-
-      Background(
-      isAuth: true,
-      child: SizedBox(
-        height: 100.h,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: 100.w,
-              height: 94.h,
-              child: Padding(
-                padding: const EdgeInsets.all(14.0),
-                child: ValueListenableBuilder(
-                  valueListenable: showLoginContent,
-                  builder: (context, child, _) {
-                    return Stack(
+      return Background(
+        isAuth: true,
+        resize: false,
+        child: Stack(
+          children: [
+            Scaffold(
+              backgroundColor: Colors.transparent,
+              body:  SingleChildScrollView(
+                child: SizedBox(
+                  height: 100.h,
+                  child: Padding(
+                    padding: const EdgeInsets.all(14.0),
+                    child: ValueListenableBuilder(
+                      valueListenable: showLoginContent,
+                      builder: (context, child, _) {
+                        return Stack(
+                          children: [
+                            // Logo Animation
+                            AnimatedPositioned(
+                              duration: animationDuration,
+                              curve: Curves.easeInOut,
+                              top: showLoginContent.value ? 60 : 100.h / 2 - 80,
+                              // Move up when login content is shown
+                              left: 0,
+                              right: 0,
+                              child: Center(
+                                child: Hero(
+                                  tag: 'logo',
+                                  child: CustomImageView(
+                                    imagePath: logo,
+                                  ),
+                                ),
+                              ),
+                            ),
+                            // Login Content Animation
+                            AnimatedOpacity(
+                              duration: animationDuration,
+                              opacity: showLoginContent.value ? 1.0 : 0.0,
+                              // Fade in/out the login content
+                              child: Visibility(
+                                visible: showLoginContent.value,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(top: 200),
+                                  child: loginContent(context),
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              )
+            ),
+            ValueListenableBuilder(
+              valueListenable: showLoginContent,
+              builder: (context,val,child) {
+                return showLoginContent.value?Positioned(
+                  left: 0,right: 0,bottom: 10,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        // Logo Animation
-                        AnimatedPositioned(
-                          duration: animationDuration,
-                          curve: Curves.easeInOut,
-                          top: showLoginContent.value ? 60 : 100.h / 2 - 80,
-                          // Move up when login content is shown
-                          left: 0,
-                          right: 0,
-                          child: Center(
-                            child: Hero(
-                              tag: 'logo',
-                              child: CustomImageView(
-                                imagePath: logo,
+                        Text(
+                          "Create a New Account?",
+                          style: textStyleSemiBoldMedium.copyWith(color: Colors.white),
+                        ),
+                        Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () => navigateTo(
+                                context: context,
+                                destination:
+                                RegisterScreen.builder(context, countryCodes)),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                              child: Text(
+                                "Sign Up",
+                                style:
+                                textStyleSemiBoldMedium.copyWith(color: Colors.red),
                               ),
                             ),
                           ),
                         ),
-                        // Login Content Animation
-                        AnimatedOpacity(
-                          duration: animationDuration,
-                          opacity: showLoginContent.value ? 1.0 : 0.0,
-                          // Fade in/out the login content
-                          child: Visibility(
-                            visible: showLoginContent.value,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 200),
-                              child: loginContent(context),
-                            ),
-                          ),
-                        ),
                       ],
-                    );
-                  },
-                ),
-              ),
+                    ),
+                  ),
+                ):SizedBox();
+              }
             ),
-          ),
+
+          ],
         ),
-      ),
-    );
+      );
   }
 
   Widget loginContent(BuildContext context) {
@@ -235,35 +272,6 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
 
         const Spacer(),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 10.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                "Create a New Account?",
-                style: textStyleSemiBoldMedium.copyWith(color: Colors.white),
-              ),
-              Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: () => navigateTo(
-                      context: context,
-                      destination:
-                          RegisterScreen.builder(context, countryCodes)),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                    child: Text(
-                      "Sign Up",
-                      style:
-                          textStyleSemiBoldMedium.copyWith(color: Colors.red),
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
       ],
     );
   }

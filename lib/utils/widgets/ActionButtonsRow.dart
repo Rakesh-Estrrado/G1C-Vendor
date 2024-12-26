@@ -1,8 +1,5 @@
-
 import 'package:flutter/material.dart';
-import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/CommonButton.dart';
-import 'package:sizer/sizer.dart';
 
 class ActionButtonsRow extends StatelessWidget {
   final VoidCallback onCancel;
@@ -35,7 +32,7 @@ class ActionButtonsRow extends StatelessWidget {
         Expanded(
           child: CommonButton(onTap: ()=>onCancel(),label: cancelText)
         ),
-        const SizedBox(width: 24,),
+        const SizedBox(width: 24),
         Expanded(
           child: CommonButton(onTap: ()=>onSubmit(),label: submitText)
         ),

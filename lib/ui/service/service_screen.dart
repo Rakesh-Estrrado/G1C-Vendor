@@ -189,16 +189,14 @@ class _ServiceScreenState extends State<ServiceScreen> {
                                         const SizedBox(height: 5),
                                         Row(
                                           children: [
-                                            Text("RM ${serviceList.price}",
+                                            Text(serviceList.price==0?"":"RM ${serviceList.price.toStringAsFixed(2)}",
                                                 style:
                                                     textStyleRegular.copyWith(
-                                                        decoration:
-                                                            TextDecoration
-                                                                .lineThrough,
+                                                        decoration: serviceList.salePrice==0?TextDecoration.none:TextDecoration.lineThrough,
                                                         decorationColor:
                                                             white)),
                                             const SizedBox(width: 8.0),
-                                            Text("RM ${serviceList.salePrice}",
+                                            Text(serviceList.salePrice==0?"":"RM ${serviceList.salePrice}",
                                                 style: textStyleRegular),
                                           ],
                                         ),

@@ -6,7 +6,6 @@ import 'package:g1c_vendor/data/repository/Repository.dart';
 import 'package:g1c_vendor/ui/service/addService/model/add_on_list_model.dart';
 import 'package:g1c_vendor/ui/service/addService/model/categories_model.dart';
 import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
-import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/loader.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import '../../../commonVerification/CommonVerificationProgress.dart';

@@ -1,9 +1,5 @@
-import 'dart:convert';
-import 'dart:ui';
-import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore_for_file: must_be_immutable
 class PrefUtils {
   PrefUtils() {
     SharedPreferences.getInstance().then((value) {

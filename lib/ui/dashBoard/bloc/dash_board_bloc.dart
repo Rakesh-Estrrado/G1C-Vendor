@@ -1,6 +1,5 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import "package:meta/meta.dart";
 
 part 'dash_board_event.dart';
 part 'dash_board_state.dart';

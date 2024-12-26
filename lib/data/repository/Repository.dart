@@ -4,6 +4,8 @@ import 'package:g1c_vendor/data/apiService.dart';
 import 'package:g1c_vendor/ui/auth/login/model/login_model.dart';
 import 'package:g1c_vendor/ui/auth/model/CountryCodeModel.dart';
 import 'package:g1c_vendor/ui/auth/model/terms_and_conditions_model.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/model/booking_detail_model.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/model/booking_list_model.dart';
 import 'package:g1c_vendor/ui/profile/createProfileSteps/scheduleTime/model/add_schedule_response.dart';
 import 'package:g1c_vendor/ui/profile/model/account_model.dart';
 import 'package:g1c_vendor/ui/service/addService/bloc/add_service_bloc.dart';
@@ -62,6 +64,15 @@ class Repository {
 
   Future<TermsAndConditionsModel> getTermsAndConditions() async {
     return await apiService.getTermsAndConditions();
+  }
+
+  Future<BookingListModel> getBookingList(String type, int pageNo) async {
+    return await apiService.getBookingList(type, pageNo);
+  }
+
+  Future<BookingDetailModel> getBookingDetails(
+      String type, int bookingId) async {
+    return await apiService.getBookingDetails(type, bookingId);
   }
 
   Future<SuccessModel> createBusinessProfile(
@@ -339,18 +350,23 @@ class Repository {
       String registrationNumber,
       int serviceCategories,
       String address,
-      String landmark, imgLogo) async {
-    return await apiService.updateCompanyDetails(
-        businessName,
-        registrationNumber,
-        serviceCategories,
-        address,
-        landmark,imgLogo);
+      String landmark,
+      imgLogo) async {
+    return await apiService.updateCompanyDetails(businessName,
+        registrationNumber, serviceCategories, address, landmark, imgLogo);
   }
+
   Future<SuccessModel> updateBankDetails(
-      String bankName,
-      String accName,
-      String accNo) async {
+      String bankName, String accName, String accNo) async {
     return await apiService.updateBankDetails(bankName, accName, accNo);
+  }
+
+  Future<SuccessModel> acceptRejectRequest(String action, int bookingId) async {
+    return await apiService.acceptRejectRequest(action, bookingId);
+  }
+
+  Future<SuccessModel> completingBooking(
+      int bookingId, int rating, String review) async {
+    return await apiService.completeBooking(bookingId, rating, review);
   }
 }

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:g1c_vendor/ui/commonVerification/CommonVerificationProgress.dart';
 import 'package:g1c_vendor/ui/service/addMoreServices/bloc/add_more_services_bloc.dart';
 import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
 import 'package:g1c_vendor/ui/service/serviceDetails/model/service_details_model.dart';
-import 'package:g1c_vendor/ui/service/service_screen.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
 import 'package:g1c_vendor/utils/image_constant.dart';
@@ -156,8 +154,6 @@ class _AddMoreServicesState extends State<AddMoreServices> {
         TextEditingController(text: service.serviceTotalHours.toString());
     var priceController =
         TextEditingController(text: service.servicePrice.toString());
-    var disPriceController =
-        TextEditingController(text: service.serviceDiscountPrice.toString());
 
     // var startDateController = TextEditingController(text: service.disStartDate.toDD_MM_YYYY());
     // var endDateController = TextEditingController(text: state.disEndDate.toDD_MM_YYYY());
@@ -211,7 +207,7 @@ class _AddMoreServicesState extends State<AddMoreServices> {
                     addMoreServicesBloc.addValues(val, "price"));
           },
         ),
-        SizedBox(height: 20),
+       /* SizedBox(height: 20),
         BlocSelector<AddMoreServicesBloc, AddMoreServicesState, String?>(
           selector: (state) => state.disPrice,
           builder: (context, disPrice) {
@@ -270,7 +266,7 @@ class _AddMoreServicesState extends State<AddMoreServices> {
               ),
             ),
           ],
-        ),
+        ),*/
         SizedBox(height: 20),
         serviceData.first.categoryId != 3 ? addOnsWidget() : SizedBox(),
         SizedBox(height: 40),

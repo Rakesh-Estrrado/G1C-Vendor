@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:g1c_vendor/ui/commonVerification/CommonVerificationProgress.dart';
 import 'package:g1c_vendor/ui/service/addService/bloc/add_service_bloc.dart';
 import 'package:g1c_vendor/ui/service/bloc/service_bloc.dart';
 import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
@@ -12,10 +11,7 @@ import 'package:g1c_vendor/utils/widgets/CommonDropDown.dart';
 import 'package:g1c_vendor/utils/widgets/CommonTextField.dart';
 import 'package:g1c_vendor/utils/widgets/CommonTextFieldWithRM.dart';
 import 'package:g1c_vendor/utils/widgets/customAppBar2.dart';
-
 import '../../../utils/image_constant.dart';
-import '../../../utils/widgets/CommonTextField2.dart';
-import '../addMoreServices/AddMoreServices.dart';
 
 class AddService extends StatelessWidget {
   AddService({super.key});
@@ -144,12 +140,12 @@ class AddService extends StatelessWidget {
                                 addServiceBloc.addValues(val, "price"));
                       },
                     ),
-                    SizedBox(height: 20),
+                    /*SizedBox(height: 20),
                     BlocSelector<AddServiceBloc, AddServiceState, String?>(
                         selector: (state) => state.disPrice,
                         builder: (context, disPrice) {
                           return CommonTextFieldWithRM(
-                              labelText: "Discount Price",
+                              labelText: "Price",
                               hintText: "0",
                               keyboardType: TextInputType.number,
                               onChanged: (val) =>
@@ -219,7 +215,7 @@ class AddService extends StatelessWidget {
                           ),
                         ),
                       ],
-                    ),
+                    ),*/
                     SizedBox(height: 20),
                     BlocBuilder<AddServiceBloc, AddServiceState>(
                       builder: (context, state) {

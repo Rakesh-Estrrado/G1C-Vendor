@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:g1c_vendor/ui/bookings/activeBookings/activeBookings.dart';
-import 'package:g1c_vendor/ui/bookings/cancelledBookings/cancelledBookings.dart';
-import 'package:g1c_vendor/ui/bookings/completedBookings/completedBookings.dart';
-import 'package:g1c_vendor/ui/bookings/newBookings/NewBookings.dart';
-import 'package:g1c_vendor/ui/bookings/openBookings/openBookings.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:g1c_vendor/ui/bookings/bloc/bookings_bloc.dart';
+import 'package:g1c_vendor/ui/bookings/bookingPages/cancelledBookings.dart';
+import 'package:g1c_vendor/ui/bookings/bookingPages/activeBookings.dart';
+import 'package:g1c_vendor/ui/bookings/bookingPages/completedBookings.dart';
+import 'package:g1c_vendor/ui/bookings/bookingPages/openBookings.dart';
+import 'package:g1c_vendor/ui/bookings/bookingPages/newBookings.dart';
 import 'package:g1c_vendor/ui/widgets/custom_image_view.dart';
 import 'package:g1c_vendor/utils/background.dart';
 import 'package:g1c_vendor/utils/colors.dart';
@@ -11,12 +13,21 @@ import 'package:g1c_vendor/utils/image_constant.dart';
 import 'package:g1c_vendor/utils/utils.dart';
 import 'package:g1c_vendor/utils/widgets/appBar.dart';
 
-class BookingsScreen extends StatelessWidget {
+class BookingsScreen extends StatefulWidget {
   BookingsScreen({super.key});
 
+  @override
+  State<BookingsScreen> createState() => _BookingsScreenState();
+}
+
+class _BookingsScreenState extends State<BookingsScreen> {
+
   final ValueNotifier<int> selectedTab = ValueNotifier(0);
+
   final searchController = TextEditingController();
+
   final List<String> tabs = ["New", "Open", "Active", "Completed", "Cancelled"];
+
   final scrollController = ScrollController();
 
   @override
@@ -72,29 +83,38 @@ class BookingsScreen extends StatelessWidget {
                 onChanged: (value) {},
               ),
             ),
-            ValueListenableBuilder(
-              valueListenable: selectedTab,
-              builder: (context, val, child) {
-                switch (selectedTab.value) {
-                  case 0:
-                    return Expanded(child: NewBookings());
-                  case 1:
-                    return Expanded(child: OpenBookings());
-                  case 2:
-                    return Expanded(child: ActiveBookings());
-                  case 3:
-                    return Expanded(child: CompletedBookings());
-                  case 4:
-                    return Expanded(child: CancelledBookings());
-                  default:
-                    return const Text("Default case");
-                }
-              },
-            )
+            BlocProvider(
+              create: (context) => BookingsBloc(context),
+              child: ValueListenableBuilder(
+                valueListenable: selectedTab,
+                builder: (context, val, child) {
+                  return Expanded(
+                    child: _buildTabContent(selectedTab.value),
+                  );
+                },
+              ),
+            ),
           ],
         ),
       ),
     );
+  }
+
+  Widget _buildTabContent(int tabIndex) {
+    switch (tabIndex) {
+      case 0:
+        return NewBookings();
+      case 1:
+        return OpenBookings();
+      case 2:
+        return ActiveBookings();
+      case 3:
+        return CompletedBookings();
+      case 4:
+        return CancelledBookings();
+      default:
+        return const Text("Default case");
+    }
   }
 
   // Function to scroll to the top

@@ -36,8 +36,7 @@ class AccountBloc extends Bloc<AccountEvent, AccountState> {
             basicDetails: accountResponse.data.basicDetails,
             businessDetails: accountResponse.data.businessDetails,
             bankDetails: accountResponse.data.bankDetails,
-            businessDocuments:
-                accountResponse.data.businessDetails.businessDocuments,
+            businessDocuments: accountResponse.data.businessDetails.businessDocuments,
             categoryList: categoriesResponse.data.categoryList,
             termsAndConditionsData: termsAndConditionsResponse.data,
           ));

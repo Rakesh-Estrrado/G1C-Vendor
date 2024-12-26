@@ -29,7 +29,7 @@ class CancelOrCompleteBooking extends StatelessWidget {
                     Card(
                       shape: const RoundedRectangleBorder(
                           borderRadius:
-                              BorderRadius.all(Radius.circular(10.0))),
+                          BorderRadius.all(Radius.circular(10.0))),
                       color: darkBlue,
                       surfaceTintColor: darkBlue,
                       child: Padding(
@@ -49,7 +49,7 @@ class CancelOrCompleteBooking extends StatelessWidget {
                                 Column(
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                                    CrossAxisAlignment.start,
                                     children: [
                                       Text("Clubbing Partner",
                                           style: textStyleRegularMedium),
@@ -62,18 +62,18 @@ class CancelOrCompleteBooking extends StatelessWidget {
                                               Text("RM 140.00",
                                                   style: textStyleSemiBold
                                                       .copyWith(
-                                                          color: white,
-                                                          fontSize: 14.sp,
-                                                          decoration:
-                                                              TextDecoration
-                                                                  .lineThrough,
-                                                          decorationColor:
-                                                              white)),
+                                                      color: white,
+                                                      fontSize: 14.sp,
+                                                      decoration:
+                                                      TextDecoration
+                                                          .lineThrough,
+                                                      decorationColor:
+                                                      white)),
                                               Text("  RM 120.00",
                                                   style: textStyleSemiBold
                                                       .copyWith(
-                                                          color: white,
-                                                          fontSize: 14.sp)),
+                                                      color: white,
+                                                      fontSize: 14.sp)),
                                             ],
                                           ),
                                         ),
@@ -219,7 +219,8 @@ class CancelOrCompleteBooking extends StatelessWidget {
                               style: textStyleRegular.copyWith(
                                   color: white.withOpacity(0.5))),
                           SizedBox(height: 10),
-                          Text("EDM, Hip-hop, Pop", style: textStyleRegularMedium),
+                          Text("EDM, Hip-hop, Pop",
+                              style: textStyleRegularMedium),
                           Text("Music Genres",
                               style: textStyleRegular.copyWith(
                                   color: white.withOpacity(0.5))),
@@ -229,7 +230,8 @@ class CancelOrCompleteBooking extends StatelessWidget {
                               style: textStyleRegular.copyWith(
                                   color: white.withOpacity(0.5))),
                           SizedBox(height: 10),
-                          Text("Whisky, Beer, Cocktails", style: textStyleRegularMedium),
+                          Text("Whisky, Beer, Cocktails",
+                              style: textStyleRegularMedium),
                           Text("Preferred Drinks",
                               style: textStyleRegular.copyWith(
                                   color: white.withOpacity(0.5))),
@@ -251,29 +253,33 @@ class CancelOrCompleteBooking extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Bill Summary",style: textStyleSemiBoldMedium),
-                          Container(height: 1,color: black,margin: EdgeInsets.symmetric(vertical: 10)),
+                          Text("Bill Summary", style: textStyleSemiBoldMedium),
+                          Container(height: 1, color: black, margin: EdgeInsets
+                              .symmetric(vertical: 10)),
                           Row(
                             children: [
-                              Text("SubTotal",style: textStyleRegularMedium,),
+                              Text("SubTotal", style: textStyleRegularMedium,),
                               Spacer(),
-                              Text("RM 60.00",style: textStyleRegularMedium,),
+                              Text("RM 60.00", style: textStyleRegularMedium,),
                             ],
                           ),
                           SizedBox(height: 10),
                           Row(
                             children: [
-                              Text("Discount",style: textStyleRegularMedium,),
+                              Text("Discount", style: textStyleRegularMedium,),
                               Spacer(),
-                              Text("- RM 20.00",style: textStyleRegularMedium,),
+                              Text(
+                                "- RM 20.00", style: textStyleRegularMedium,),
                             ],
                           ),
-                          Container(height: 1,color: black,margin: EdgeInsets.symmetric(vertical: 10)),
+                          Container(height: 1, color: black, margin: EdgeInsets
+                              .symmetric(vertical: 10)),
                           Row(
                             children: [
-                              Text("Total",style: textStyleSemiBoldMedium),
+                              Text("Total", style: textStyleSemiBoldMedium),
                               Spacer(),
-                              Text("- RM 20.00",style: textStyleSemiBoldMedium),
+                              Text(
+                                  "- RM 20.00", style: textStyleSemiBoldMedium),
                             ],
                           ),
                         ],
@@ -281,8 +287,8 @@ class CancelOrCompleteBooking extends StatelessWidget {
                     ),
                     SizedBox(height: 30),
                     CommonButton(
-                      onTap:()=>Navigator.pop(context),
-                      label:"Cancel",
+                      onTap: () => Navigator.pop(context),
+                      label: "Cancel",
                     ),
                     SizedBox(height: 20),
 
@@ -296,9 +302,9 @@ class CancelOrCompleteBooking extends StatelessWidget {
     );
   }
 
-  void showReviewBottomSheet(BuildContext context) {
+  void showReviewBottomSheet(BuildContext mContext) {
     showModalBottomSheet(
-      context: context,
+      context: mContext,
       isScrollControlled: true,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20.0)),
@@ -307,11 +313,13 @@ class CancelOrCompleteBooking extends StatelessWidget {
       builder: (context) {
         return Padding(
           padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context)
+            bottom: MediaQuery
+                .of(context)
                 .viewInsets
                 .bottom, // To adjust for the keyboard
           ),
-          child: RateServiceBottomSheet(),
+          child:  RateServiceBottomSheet(bookingId: 0),
+
         );
       },
     );

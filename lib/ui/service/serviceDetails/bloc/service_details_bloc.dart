@@ -5,7 +5,6 @@ import 'package:g1c_vendor/data/repository/Repository.dart';
 import 'package:g1c_vendor/ui/service/serviceDetails/model/service_details_model.dart';
 import 'package:g1c_vendor/utils/loader.dart';
 import 'package:g1c_vendor/utils/utils.dart';
-import 'package:meta/meta.dart';
 
 part 'service_details_event.dart';
 

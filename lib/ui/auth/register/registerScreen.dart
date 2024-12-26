@@ -1,6 +1,5 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:g1c_vendor/ui/auth/register/bloc/register_bloc.dart';
 import 'package:g1c_vendor/ui/termsAndConditions/TermsAndConditions.dart';
@@ -32,100 +31,82 @@ class RegisterScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     context.read<RegisterBloc>();
     return Background(
+      resize: false,
       isAuth: true,
-      child: SizedBox(
-        height: 100.h,
-        child: SafeArea(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: 100.w,
-              height: 95.h,
+      child: Stack(
+        children: [
+          Scaffold(
+            backgroundColor: Colors.transparent,
+            body: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.all(14.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Center(
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 40.0),
+                        padding: const EdgeInsets.only(top: 60.0),
                         child: CustomImageView(
                           imagePath: logo,
                         ),
                       ),
                     ),
-
                     const SizedBox(height: 100),
-                    Text("Provider Sign Up",
-                        style: textStyleBoldLarge.copyWith(fontSize: 22.sp)),
-
+                    Text(
+                      "Provider Sign Up",
+                      style: textStyleBoldLarge.copyWith(fontSize: 22.sp),
+                    ),
                     const SizedBox(height: 30),
-                    // Phone Number Label
                     Text(
                       "Phone Number",
-                      style:
-                      textStyleSemiBoldMedium, // Ensure textStyleSemiBoldMedium is defined
+                      style: textStyleSemiBoldMedium,
                     ),
-
                     const SizedBox(height: 10),
-
-                    // Phone Number Input Field with Flag, Country Code, and Input
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 15.0),
                       decoration: BoxDecoration(
-                        color: darkBlue200, // Assuming darkBlue200 is defined
+                        color: darkBlue200,
                         borderRadius: BorderRadius.circular(15.0),
                       ),
                       child: Row(
                         children: [
-                          // Country flag, code, and arrow
                           Row(
                             children: [
                               Image.asset(logo, height: 24, width: 24),
-                              // Assuming logo is the flag here
                               const SizedBox(width: 8),
-                              SizedBox(width: 80, child: ValueListenableBuilder<
-                                  String?>(
-                                 valueListenable: selectedCountryCode,
-                                builder: (context, val, child) {
-                                  return Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: DropdownButtonHideUnderline(
+                              SizedBox(
+                                width: 80,
+                                child: ValueListenableBuilder<String?>(
+                                  valueListenable: selectedCountryCode,
+                                  builder: (context, val, child) {
+                                    return DropdownButtonHideUnderline(
                                       child: DropdownButton(
                                         dropdownColor: darkBlue400,
                                         value: selectedCountryCode.value,
                                         isExpanded: true,
-                                        hint: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text("Select State"),
-                                        ),
+                                        hint: Text("Select State"),
                                         style: textStyleRegular,
                                         items: countryCodes.map((String value) {
-                                          return new DropdownMenuItem<String>(
+                                          return DropdownMenuItem<String>(
                                             value: value,
-                                            child: new Text(value),
+                                            child: Text(value),
                                           );
                                         }).toList(),
                                         onChanged: (val) {
                                           selectedCountryCode.value =
                                               val.toString();
                                         },
-                                        icon: Icon(
-                                            Icons.arrow_drop_down, color: white),
+                                        icon: Icon(Icons.arrow_drop_down,
+                                            color: white),
                                       ),
-
-                                    ),
-                                  );
-                                },
-                              )),
-
+                                    );
+                                  },
+                                ),
+                              ),
                             ],
                           ),
-
                           const SizedBox(width: 5),
-
-                          // Phone number input field
                           Expanded(
                             child: TextField(
                               keyboardType: TextInputType.phone,
@@ -156,12 +137,9 @@ class RegisterScreen extends StatelessWidget {
                                   checkedTermsAndConditions.value = value!;
                                 },
                                 activeColor: Colors.white,
-                                // Change to your preferred color
-                                checkColor: Colors
-                                    .black, // Change to your preferred color
+                                checkColor: Colors.black,
                               );
-                            }
-                        ),
+                            }),
                         const SizedBox(height: 10),
                         Expanded(
                           child: RichText(
@@ -172,7 +150,6 @@ class RegisterScreen extends StatelessWidget {
                                   style: textStyleRegularMedium.copyWith(
                                       fontSize: 15.sp),
                                 ),
-
                                 TextSpan(
                                   text: 'Terms of Use',
                                   style: textStyleRegularMedium.copyWith(
@@ -180,7 +157,11 @@ class RegisterScreen extends StatelessWidget {
                                       decoration: TextDecoration.underline),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      navigateTo(context: context, destination: TermsAndConditions.builder(context,"Terms of Use"));
+                                      navigateTo(
+                                          context: context,
+                                          destination:
+                                              TermsAndConditions.builder(
+                                                  context, "Terms of Use"));
                                     },
                                 ),
                                 TextSpan(
@@ -198,7 +179,11 @@ class RegisterScreen extends StatelessWidget {
                                       decoration: TextDecoration.underline),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      navigateTo(context: context, destination: TermsAndConditions.builder(context,"Privacy Policy"));
+                                      navigateTo(
+                                          context: context,
+                                          destination:
+                                              TermsAndConditions.builder(
+                                                  context, "Privacy Policy"));
                                     },
                                 ),
                                 TextSpan(
@@ -216,8 +201,11 @@ class RegisterScreen extends StatelessWidget {
                                       decoration: TextDecoration.underline),
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      navigateTo(context: context, destination: TermsAndConditions.builder(context,"PDPA & NDA"));
-
+                                      navigateTo(
+                                          context: context,
+                                          destination:
+                                              TermsAndConditions.builder(
+                                                  context, "PDPA & NDA"));
                                     },
                                 ),
                               ],
@@ -226,65 +214,56 @@ class RegisterScreen extends StatelessWidget {
                         ),
                       ],
                     ),
-
                     const SizedBox(height: 30),
-                    CommonButton(label: "Send OTP", onTap: () {
-                      if (checkedTermsAndConditions.value) {
-                        var phoneNo = mobile.text;
-                        if (phoneNo.isEmpty) {
-                          showSnackBar(context: context,
-                              msg: "Please enter a valid mobile number.");
-                          return;
-                        }
-                        context.read<RegisterBloc>()
-                          ..sendOTP(phoneNo, selectedCountryCode.value);
-
-                      } else {
-                        showSnackBar(context: context,
-                            msg: "Please accept terms and conditions");
-                      }
-                    }),
-
-                    const Spacer(),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            "Already Have An Account?",
-                            style:
-                            textStyleSemiBoldMedium.copyWith(color: Colors.white),
-                          ),
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () {
-                                HapticFeedback.selectionClick();
-                                Navigator.pop(context);
-                              },
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 4.0),
-                                child: Text(
-                                  "Sign In",
-                                  style:
-                                  textStyleSemiBoldMedium.copyWith(
-                                      color: Colors.red),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-
+                    CommonButton(
+                        label: "Send OTP",
+                        onTap: () {
+                          if (checkedTermsAndConditions.value) {
+                            var phoneNo = mobile.text;
+                            if (phoneNo.isEmpty) {
+                              showSnackBar(
+                                  context: context,
+                                  msg: "Please enter a valid mobile number.");
+                              return;
+                            }
+                            context.read<RegisterBloc>()
+                              ..sendOTP(phoneNo, selectedCountryCode.value);
+                          } else {
+                            showSnackBar(
+                                context: context,
+                                msg: "Please accept terms and conditions");
+                          }
+                        }),
+                    const SizedBox(height: 20), // Replace Spacer
                   ],
                 ),
               ),
             ),
           ),
-        ),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Already Have An Account?",
+                      style: textStyleSemiBoldMedium.copyWith(
+                          color: Colors.white)),
+                  SizedBox(width: 10),
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text("Sign In",
+                        style: textStyleSemiBoldMedium.copyWith(
+                            color: Colors.red)),
+                  ),
+                ],
+              ),
+            ),
+          )
+        ],
       ),
     );
   }

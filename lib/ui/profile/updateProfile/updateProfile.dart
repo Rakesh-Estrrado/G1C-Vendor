@@ -77,7 +77,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       builder: (context, state) {
                         name.text = "${state.basicDetails?.fname}";
                         email.text = "${state.basicDetails?.email}";
-                        mobileNo.text = "${state.basicDetails?.phone}";
+                        mobileNo.text = "+${state.basicDetails?.countryCode} ${state.basicDetails?.phone}";
                         return Column(
                           children: [
                             Padding(
